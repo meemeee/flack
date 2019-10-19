@@ -9,9 +9,10 @@ All Channels
     <h2>Available channels</h2>
     <ul>
         {% for channel in channels %}
-            <li>{{ channel.name }}</li>
+            <li><a href="/channels/{{ channel }}">{{ channel }}</a></li>
+        {% endfor %}
     </ul>
-    <p href="{{ url_for('create_channel') }}">Create a new channel</p>
+    <p href="{{ url_for('new_channel') }}">Create a new channel</p>
 </div>
 
 {% endblock %}

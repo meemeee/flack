@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block tittle %}
+New channel
+{% endblock %}
+
+{% block main %}
+<div class="text-center">
+    <h2>Create A New Channel</h2>
+    <form action="{{ url_for('new_channel') }}" method="post">
+        <div class="form-group">
+            <input autofocus autocomplete="off" class="form-control" id="channel_name" name="channel_name" 
+            placeholder="Your channel name" type="text">
+        </div>
+
+        <button id="new_channel" class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#new_channel').onsubmit = () => {
+            if (document.querySelector('#channel_name').value.leng === 0) {
+                alert("You must provide channel name.");
+            }
+            else if (document.querySelector('#channel_name').value.leng > 25) {
+                alert("Channel name must not exceed 25 characters.");
+            }
+
+            // Stop form from submitting
+            return false;
+        };
+    });
+    
+</script>
+{% endblock %}
