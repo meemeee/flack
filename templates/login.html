@@ -12,11 +12,15 @@ Welcome!
             <input id="name" autofocus autocomplete="off" class="form-control" name="name" 
                 placeholder="Input your name here" type="text">       
         </div>
-        <button id="start" class="btn btn-primary">Start</button>
+        <a href="{{ url_for('channels') }}">
+            <button id="start" class="btn btn-primary">Start</button>
+        </a>
     </div>
     
     <div id="name-exists">
-        <button class="btn btn-primary">Start</button>
+        <a href="{{ url_for('channels') }}">
+            <button class="btn btn-primary">Start</button>
+        </a>
     </div>
    
 </div>

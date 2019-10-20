@@ -12,7 +12,7 @@ All Channels
             <li><a href="/channels/{{ channel }}">{{ channel }}</a></li>
         {% endfor %}
     </ul>
-    <p href="{{ url_for('new_channel') }}">Create a new channel</p>
+    <a href="{{ url_for('new_channel') }}">Create a new channel</a>
 </div>
 
 {% endblock %}
