@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
+    // Scroll to to bottom to see latest messages
+    var allmess = document.querySelector('#allmessages');    
+    allmess.scrollTop = allmess.scrollHeight;
+    
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -23,7 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('add new message', data => {
         const mess = document.createElement('p');
         mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
-        document.querySelector('#allmessages').append(mess);
+        
+        var allmess = document.querySelector('#allmessages');
+        allmess.append(mess);
+        
+        // Scroll to to bottom to see latest messages
+        allmess.scrollTop = allmess.scrollHeight;
+
     });
     
 });
