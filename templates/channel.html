@@ -5,33 +5,52 @@
 {% endblock %}
 
 {% block main %}
-
-<div id="chatbox" class=" text-left">
-    <div class="col chat-head">
-        <h2 id="channel_title">{{ channel }}</h2>
-    </div>
-    <hr>
-    <div id="allmessages" class="col chat-body">
-        {% for message in messages %}
-        <p><b>{{ message.user }}</b>: {{ message.content }} ---- <i>{{ message.timestamp }}</i></p>
-        {% endfor %}
-    </div>
-    <hr>
-    <!-- <div class="w-100 d-none d-md-block"></div> -->
-    <div id="type_message" class="col chat-foot">
-        <div class="input-group">
-            <input autofocus autocomplete="off" class="form-control" id="message" aria-describedby="send"
-            name="message" placeholder="Type your message here" type="text">
-            <div class="input-group-append">
-                <button id="send" class="btn btn-primary">Send</button>
-            </div>
-            
+<div class="row flex-xl-nowrap">
+    <div id="all_channels" class="col-12 col-md-3 col-xl-2 bd-sidebar">
+        <h4 class="sidebar-head">All channels</h4>
+        <hr>
+        <ul class="py-3">
+            {% for item in channels %}
+            <li><a href="/channels/{{ channel }}"># {{ item }}</a></li>
+            {% endfor %}
+        </ul>
+        <div>
+            <a href="{{ url_for('new_channel') }}">Create a new channel</a>
         </div>
-        
+     
     </div>
+
+    <main class="col-12 col-md-9 col-xl-8 pl-md-5 bd-content">
+        <div id="chatbox" class=" text-left">
+            <div class="col chat-head">
+                <h2 id="channel_title">{{ channel }}</h2>
+            </div>
+            <hr>
+            <div id="allmessages" class="col chat-body">
+                {% for message in messages %}
+                <p><b>{{ message.user }}</b>: {{ message.content }} ---- <i>{{ message.timestamp }}</i></p>
+                {% endfor %}
+            </div>
+            <hr>
+
+            <div id="type_message" class="col chat-foot">
+                <div class="input-group">
+                    <input autofocus autocomplete="off" class="form-control" id="message" aria-describedby="send"
+                        name="message" placeholder="Type your message here" type="text">
+                    <div class="input-group-append">
+                        <button id="send" class="btn btn-primary" type="submit">Send</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
 </div>
-    
-    
+
+
+
+
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script src="{{ url_for('static', filename='channel.js') }}"></script>

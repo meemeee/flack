@@ -58,7 +58,7 @@ def channel(channel):
         
     messages = channel_list[channel]
 
-    return render_template("channel.html", messages=messages, channel=channel)
+    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list)
         
 @socketio.on('send message')
 def new_mess(data):
