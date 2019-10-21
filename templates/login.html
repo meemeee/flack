@@ -7,8 +7,8 @@ Welcome!
 {% block main %}
 <div class="text-center">
     <h2 class="pb-4">Welcome!</h2>
-    <div>
-        <div id="name-no-exists" class="form-group" style="display: none">
+    <div id="name-no-exists" style="display: none">
+        <div class="form-group">
             <input id="name" autofocus autocomplete="off" class="form-control" name="name" 
                 placeholder="Input your name here" type="text">       
         </div>
@@ -27,7 +27,7 @@ Welcome!
 
 <script>
     // Display form to acquire name if this is the first time, else no form
-    if (!localStorage.getItem('name')) 
+    if (!localStorage.getItem('name')) {
         document.querySelector('#name-no-exists').style.display = "block";
         document.querySelector('#name-exists').style.display = "none";
         
@@ -51,6 +51,11 @@ Welcome!
                 localStorage.setItem('name', name.value);
             };
         });
+    }
+
+    else {
+        document.querySelector('#name-exists').style.display = "block";
+    }
 
 </script>
 {% endblock %}
