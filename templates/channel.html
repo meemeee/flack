@@ -11,7 +11,11 @@
         <hr>
         <ul class="py-3">
             {% for item in channels %}
-            <li><a href="/channels/{{ item }}"># {{ item }}</a></li>
+            <li class="single-channel" data-name="{{ item }}">
+                <a href="/channels/{{ item }}">
+                    # {{ item }}
+                </a>
+            </li>
             {% endfor %}
         </ul>
         <div>

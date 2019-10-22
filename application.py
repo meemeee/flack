@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, jsonify
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -23,6 +23,34 @@ def channels():
     """ Display all channels """
 
     return render_template("channels.html", channels=channel_list)
+
+@app.route("/ajax", methods=["POST"])
+def ajax():
+
+    """ View a channel when in channel list page """
+    # make sure channel exists
+    channel = request.form.get("channel_name")
+    
+    if not channel in channel_list:
+        return jsonify({"success": False})
+        
+    messages = channel_list[channel]
+    print(messages)
+    return jsonify({"success": True, "messages":messages, "channel":channel})
+
+
+@app.route("/channels/<string:channel>")
+def channel(channel):
+ 
+    """ View a channel by modifying the url """
+    # make sure channel exists
+    if not channel in channel_list:
+        return render_template("error.html", message="No channel with this name.")
+        
+    messages = channel_list[channel]
+
+    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list)
+
 
 @app.route("/new_channel", methods=["POST", "GET"])
 def new_channel():
@@ -48,17 +76,7 @@ def new_channel():
 
         return redirect("/channels")
 
-@app.route("/channels/<string:channel>")
-def channel(channel):
- 
-    """ View a single channel """
-    # make sure channel exists
-    if not channel in channel_list:
-        return render_template("error.html", message="No channel with this name.")
-        
-    messages = channel_list[channel]
 
-    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list)
         
 @socketio.on('send message')
 def new_mess(data):
