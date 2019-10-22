@@ -4,62 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     var allmess = document.querySelector('#allmessages');    
     allmess.scrollTop = allmess.scrollHeight;
     
-    // Create Ajax request when changing channels
-    document.querySelectorAll('.single-channel').forEach(li => {
-        li.onclick = () => {
-            // Initialize new request
-            const request = new XMLHttpRequest();
-            const channel = li.dataset.name;
-            request.open('POST', '/ajax');
-
-            // Callback function for when request completes
-            request.onload = () => {
-                // Extract JSON data from request
-                const data = JSON.parse(request.responseText);
-
-                // Update the chat div
-                if (data.success) {
-                    console.log(data.messages);
-                    // console.log(data.messages[0]["content"]);
-                    document.querySelector('#channel_title').innerHTML = data.channel;
-                    if (data.messages.length === 0) {
-                        document.querySelector('#allmessages').innerHTML = " ";
-                    }
-                    else {
-                        // Loop through messages
-                        var text = "";
-                        var i;
-                        for (i = 0; i < data.messages.length; i++) {
-                            text += "<p><b>" + data.messages[i]["user"] + "</b>: " 
-                            + data.messages[i]["content"] + " ---- <i>" 
-                            + data.messages[i]["timestamp"] + "</i></p>";
-                        }
-
-                        document.querySelector('#allmessages').innerHTML = text;
-                        // `{% for item in ${data.messages} %}
-                        // <p><b>{{ item.user }}</b>: {{ item.content }} ---- <i>{{ item.timestamp }}</i></p>
-                        // {% endfor %}`;
-                    }
-                    
-                    // Update URL
-                    // history.pushState(null, '', '/en/step2'); 
-                }
-
-                else {
-                    document.querySelector('#chatbox').innerHTML = 'There was an error.';
-                }
-            }
-
-            // Add data to send with request
-            const data = new FormData();
-            data.append('channel_name', channel);
-
-            // Send request
-            request.send(data);
-            return false;
-
-        };
-    });
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -106,7 +50,67 @@ document.addEventListener('DOMContentLoaded', () => {
         allmess.scrollTop = allmess.scrollHeight;
 
     });
-    
+
+    // Create Ajax request when changing channels
+    document.querySelectorAll('.single-channel').forEach(li => {
+        li.onclick = () => {
+            // Initialize new request
+            const request = new XMLHttpRequest();
+            const channel = li.dataset.name;
+            request.open('POST', '/ajax');
+
+            // Callback function for when request completes
+            request.onload = () => {
+                // Extract JSON data from request
+                const data = JSON.parse(request.responseText);
+
+                // Update the chat div
+                if (data.success) {
+                    // Replacing page title
+                    document.title = "Chat | " + data.channel;
+                    
+                    // Replacing content on layout
+                    document.querySelector('#channel_title').innerHTML = data.channel;
+                    
+                    // Check if this is a new channel
+                    if (data.messages.length === 0) {
+                        document.querySelector('#allmessages').innerHTML = `<i>This is the beginning of <b>${data.channel}</b> channel</i>`;
+                    }
+                    else {
+                        // Loop through messages
+                        var text = "";
+                        var i;
+                        for (i = 0; i < data.messages.length; i++) {
+                            text += "<p><b>" + data.messages[i]["user"] + "</b>: " 
+                            + data.messages[i]["content"] + " ---- <i>" 
+                            + data.messages[i]["timestamp"] + "</i></p>";
+                        }
+
+                        document.querySelector('#allmessages').innerHTML = text;
+                    }
+
+                    // Display input message field
+                    document.querySelector('#type_message').style.display = "block";
+                    
+                    // Update URL
+                    history.pushState({"id": data.channel}, "", "/channels/" + data.channel); 
+                }
+
+                else {
+                    document.querySelector('#chatbox').innerHTML = 'There was an error.';
+                }
+            }
+
+            // Add data to send with request
+            const data = new FormData();
+            data.append('channel_name', channel);
+
+            // Send request
+            request.send(data);
+            return false;
+
+        };
+    });
     
 });
 

@@ -29,26 +29,9 @@
     </head>
 
     <body>
-        <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light screen-only">
-            <a class="navbar-brand" href="">Chat App</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse ml-auto" id="navbarNav">
-                <div class="navbar-nav mr-auto">
-                    <a class="nav-link" href="{{ url_for('channels') }}">Browse for channels</a>
-                </div>
-            </div>
-        </nav> -->
-
-        <!-- <main class="container p-7"> -->
-            <div class="container-fluid">
-                {% block main %}{% endblock %}
-            </div>
-        <!-- </main> -->
-        
+        <div class="container-fluid">
+            {% block main %}{% endblock %}
+        </div>        
     </body>
 
 </html>

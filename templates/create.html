@@ -5,16 +5,21 @@ New channel
 {% endblock %}
 
 {% block main %}
-<div class="text-center">
-    <h2>Create A New Channel</h2>
-    <form action="{{ url_for('new_channel') }}" method="post">
-        <div class="form-group">
-            <input autofocus autocomplete="off" class="form-control" id="channel_name" name="channel_name" 
-            placeholder="Your channel name" type="text">
-        </div>
-
-        <button id="new_channel" class="btn btn-primary" type="submit">Submit</button>
-    </form>
+<div class="container-fluid col-4 col-md-4 col-xl-4 py-md-5 py-sm-5">
+    <div class="py-5 text-left">
+        <h4 class="p-2">Create A New Channel</h4>
+        <form action="{{ url_for('new_channel') }}" method="post">
+            <div class="form-group d-flex bd-highlight">
+                <div class="p-2 flex-grow-1 bd-highlight">
+                    <input autofocus autocomplete="off" class="form-control" id="channel_name" name="channel_name" 
+                        placeholder="Your channel name" type="text">
+                </div>
+                <div class="p-2 bd-highlight">
+                    <button id="new_channel" class="btn btn-primary" type="submit">Create</button>   
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script>
