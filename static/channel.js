@@ -53,3 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
     
 });
 
+
+// Remembering the Channel before closing window
+window.addEventListener('unload', event => {
+    localStorage.setItem('last_channel', window.location.href);
+});
+
+
+
+
+
+
+
+

@@ -15,4 +15,10 @@ All Channels
     <a href="{{ url_for('new_channel') }}">Create a new channel</a>
 </div>
 
+<script>
+// Clear previous lastChannel value
+window.addEventListener('unload', event => {
+    localStorage.removeItem('last_channel')
+});
+</script>
 {% endblock %}

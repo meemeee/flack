@@ -31,6 +31,11 @@ New channel
             return false;
         };
     });
+
+    // Clear previous lastChannel value
+    window.addEventListener('unload', event => {
+        localStorage.removeItem('last_channel')
+    });
     
 </script>
 {% endblock %}

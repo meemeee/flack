@@ -26,7 +26,28 @@ Welcome!
 </div>
 
 <script>
-    // Display form to acquire name if this is the first time, else no form
+    // Redirect to last channel if this is not the first visit
+    if (localStorage.getItem('last_channel')) {
+        // Only show Welcome
+        document.querySelector('#name-no-exists').style.display = "none";
+        document.querySelector('#name-exists').style.display = "none";
+        
+        // // This is a function that redirect to last channel
+        // function reDirect () {
+        //     window.location.replace(localStorage.getItem('last_channel'));
+        //     // Clear previous lastChannel value
+        //     localStorage.removeItem('last_channel');
+        // };
+        // Stay in page for 2 sec before redirect to last channel
+        document.addEventListener ('DOMContentLoaded', setTimeout( () => {
+            window.location.replace(localStorage.getItem('last_channel'));
+            // Clear previous lastChannel value
+            localStorage.removeItem('last_channel');
+        }
+        , 2000));     
+    };
+
+    // No last channel: Display form to acquire name if this is the first time, else no form
     if (!localStorage.getItem('name')) {
         document.querySelector('#name-no-exists').style.display = "block";
         document.querySelector('#name-exists').style.display = "none";
@@ -35,15 +56,15 @@ Welcome!
             
             // By default, Start button is disabled
             const start = document.querySelector('#start');
-            start.disaled = true;
+            start.disabled = true;
             
             // Enable Start button only if there is text in the input field
             const name = document.querySelector('#name');
             document.querySelector('#name').onkeyup = () => {
                 if (name.value.length > 0)
-                    start.disable = false;                       
+                    start.disabled = false;                       
                 else
-                    start.disable = true;
+                    start.disabled = true;
             };
 
             // Save name
