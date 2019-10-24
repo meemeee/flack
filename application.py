@@ -24,8 +24,8 @@ def channels():
 
     return render_template("channels.html", channels=channel_list)
 
-@app.route("/ajax", methods=["POST"])
-def ajax():
+@app.route("/ajax_channel", methods=["POST"])
+def change_channel():
 
     """ View a channel when in channel list page """
     # make sure channel exists
@@ -38,6 +38,41 @@ def ajax():
     print(messages)
     return jsonify({"success": True, "messages":messages, "channel":channel})
 
+@app.route("/ajax_del", methods=["POST"])
+def delete_message():
+
+    """ Delete a single message """
+   
+    mess_id = request.form.get("mess_id")
+    channel = request.form.get("channel_name")
+    
+    # Delete message from memory
+    messages = channel_list[channel]
+    for message in messages:
+        if message["mess_id"] == mess_id:
+            del message
+            return jsonify({"success": True, "messages": mess_id})
+        else:
+            return jsonify({"success": False})
+    
+# @socketio.on('delete message')
+
+# def delete(data):
+#     print(data)
+#     mess_id = data["mess_id"]
+#     channel_name = data["channel"]
+
+#     # Delete message from memory
+#     messages = channel_list[channel_name]
+#     for message in messages:
+#         if message["mess_id"] == mess_id:
+#             del message
+#             print("deleted")
+#             break
+#         else:
+#             print("cannot find message")
+#     # Broadcast new message
+#     emit('deletion complete', {"mess_id": mess_id}, broadcast=True)
 
 @app.route("/channels/<string:channel>")
 def channel(channel):
@@ -97,6 +132,11 @@ def new_mess(data):
     emit('add new message', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 
+
+
+
+
+    
 
 
 

@@ -76,3 +76,7 @@ label::after{
     font-family: FontAwesome;
     display: inline-block; 
 }
+
+p {
+    margin-bottom: 0;
+}

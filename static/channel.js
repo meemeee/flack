@@ -11,18 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When connected, configure send button
     socket.on('connect', () => {
-        // Associate hitting Enter button with clicking submit
-        // document.querySelector('#message').onkeyup = event => {
-        //     if (event.keyCode === 13) {
-        //         event.preventDefault();
-        //         document.querySelector('#send').onclick();
-        //     }
-        // };
-        
-        // Emit message whenever 'Send' button is clicked on
-        let count = 0;
+        console.log("websocket connected");
+        // Emit message whenever 'Send' button is clicked on      
         document.querySelector('form').onsubmit = event => {
             event.preventDefault();
+            let count = document.querySelectorAll('.single-message').length;
             const message = document.querySelector('#message').value;
             
             // ignore empty message
@@ -40,6 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#message').value = '';
             };
         };
+
+        // // Emit delete action when trashbin is clicked on
+        // document.querySelectorAll('label').forEach(label => {
+        //     label.onclick = () => {
+        //         var result = confirm("Do you want to remove this message?");
+        //         if (result) {
+        //             const id = label.getAttribute('value');
+        //             const channel_name = document.title;
+
+        //             socket.emit('delete message', {"channel": channel_name, "mess_id": id});
+        //         };
+        //     }       
+        // });
         
     });
 
@@ -47,8 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('add new message', data => {
         const mess = document.createElement('p');
         mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
+        mess.setAttribute('class', 'single-message');
+        mess.id = data.mess_id;
         const trashbin = document.createElement('label');
-        trashbin.setAttribute('value', `${data.mess_id}`)
+        trashbin.setAttribute('value', `${data.mess_id}`);
+        // addtrashbin(trashbin);
         mess.append(trashbin);
         allmess.append(mess);
         
@@ -58,13 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     });
 
+    // When a message is deleted, update the whole channel
+    // socket.on('deletion complete', data => {
+    //     console.log("1");
+    //     del_mess = document.getElementById(`${data.mess_id}`);
+    //     console.log("2");
+    //     del_mess.remove();
+    // });
+
+
     // Create Ajax request when changing channels
     document.querySelectorAll('.single-channel').forEach(li => {
         li.onclick = () => {
             // Initialize new request
             const request = new XMLHttpRequest();
             const channel = li.dataset.name;
-            request.open('POST', '/ajax');
+            request.open('POST', '/ajax_channel');
 
             // Callback function for when request completes
             request.onload = () => {
@@ -93,9 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         var text = "";
                         var i;
                         for (i = 0; i < data.messages.length; i++) {
-                            text += "<p><b>" + data.messages[i]["user"] + "</b>: " 
+                            text += "<p id=" + data.messages[i]["mess_id"] + "class='single-message'><b>" 
+                            + data.messages[i]["user"] + "</b>: " 
                             + data.messages[i]["content"] + " ---- <i>" 
-                            + data.messages[i]["timestamp"] + "</i></p>";
+                            + data.messages[i]["timestamp"] + "</i>"
+                            +"<label value=" + data.messages[i]["mess_id"] + "></label></p>";
                         }
 
                         document.querySelector('#allmessages').innerHTML = text;
@@ -106,6 +126,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Update URL
                     history.pushState({"id": data.channel}, "", "/channels/" + data.channel); 
+
+                  
                 }
 
                 else {
@@ -124,6 +146,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
     
+    // Create Ajax request when deleting a message
+  
+    document.querySelectorAll('label').forEach(label => {
+        label.onclick = addtrashbin(label);
+        console.log("1");
+    });
 });
 
 
@@ -132,7 +160,42 @@ window.addEventListener('unload', event => {
     localStorage.setItem('last_channel', window.location.href);
 });
 
+function addtrashbin(item) {
+    var result = confirm("Do you want to remove this message?");
+    if (result) {
+        const id = item.getAttribute('value');
+        const channel_name = document.title;
 
+        // Initialize new request
+        const request = new XMLHttpRequest();
+        request.open('POST', '/ajax_del');
+
+        // Callback function for when request completes
+        request.onload = () => {
+            // Extract JSON data from request
+            const data = JSON.parse(request.responseText);
+
+            if (data.success) {           
+                del_mess = document.getElementById(`${data.mess_id}`);
+                del_mess.remove();
+            }
+            else {
+                alert('There was an error.');
+            }
+        };
+
+        // Add data to send with request
+        const data = new FormData();
+        data.append('channel_name', channel_name);
+        data.append('mess_id', id);
+
+        // Send request
+        request.send(data);
+        return false;
+    };
+
+    
+}
 
 
 
