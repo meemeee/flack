@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
+    // Display user name
+    document.querySelector('#user_name').innerHTML = localStorage.getItem('name');
+
     // Scroll to to bottom to see latest messages
     var allmess = document.querySelector('#allmessages');    
     allmess.scrollTop = allmess.scrollHeight;
@@ -10,26 +12,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // When connected, configure send button
     socket.on('connect', () => {
         // Associate hitting Enter button with clicking submit
-        document.querySelector('#message').onkeyup = event => {
-            if (event.keyCode === 13) {
-                event.preventDefault();
-                document.querySelector('#send').onclick();
-            }
-        };
+        // document.querySelector('#message').onkeyup = event => {
+        //     if (event.keyCode === 13) {
+        //         event.preventDefault();
+        //         document.querySelector('#send').onclick();
+        //     }
+        // };
         
         // Emit message whenever 'Send' button is clicked on
-        document.querySelector('#send').onclick = event => {
+        let count = 0;
+        document.querySelector('form').onsubmit = event => {
+            event.preventDefault();
             const message = document.querySelector('#message').value;
             
             // ignore empty message
             if (message.length === 0)
-                event.preventDefault();
+                return false;
             
             else {
+                const id = count++;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 const user = localStorage.getItem('name');
                 const timestamp = new Date().toISOString().split('T')[0] + " " + new Date().toISOString().split('T')[1].split('.')[0];
-                socket.emit('send message', {"channel": channel,"user": user,"content": message, "timestamp": timestamp});
+                socket.emit('send message', {"channel": channel, "mess_id": id, "user": user, "content": message, "timestamp": timestamp});
                 
                 // Clear input field
                 document.querySelector('#message').value = '';
@@ -42,9 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('add new message', data => {
         const mess = document.createElement('p');
         mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
-        
-        // var allmess = document.querySelector('#allmessages');
+        const trashbin = document.createElement('label');
+        trashbin.setAttribute('value', `${data.mess_id}`)
+        mess.append(trashbin);
         allmess.append(mess);
+        
         
         // Scroll to to bottom to see latest messages
         allmess.scrollTop = allmess.scrollHeight;
@@ -74,7 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Check if this is a new channel
                     if (data.messages.length === 0) {
-                        document.querySelector('#allmessages').innerHTML = `<i>This is the beginning of <b>${data.channel}</b> channel</i>`;
+                        var newchannel_content = `<i>This is the beginning of <b>${data.channel}</b> channel.</i>`;
+                        document.querySelector('#allmessages').innerHTML = newchannel_content;
+                        // // Remove when there is 1st message
+                        // document.querySelector('#send').onclick = () => {
+                        //     newchannel_content = [];
+                        // };
                     }
                     else {
                         // Loop through messages

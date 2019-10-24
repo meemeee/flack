@@ -7,7 +7,10 @@
 {% block main %}
 <div class="row flex-xl-nowrap">
     <div id="all_channels" class="col-12 col-md-3 col-xl-2 bd-sidebar">
-        <h4 class="sidebar-head">All channels</h4>
+        <div class="sidebar-head">
+            <h4 >All channels</h4>
+            <p id="user_name"></p>
+        </div>
         <hr>
         <ul class="py-3">
             {% for item in channels %}
@@ -16,6 +19,8 @@
                     # {{ item }}
                 </a>
             </li>
+            {% else %}
+                <i>There's no channel yet.</i>
             {% endfor %}
         </ul>
         <div>
@@ -32,30 +37,26 @@
             <hr>
             <div id="allmessages" class="col chat-body">
                 {% for message in messages %}
-                <p><b>{{ message.user }}</b>: {{ message.content }} ---- <i>{{ message.timestamp }}</i></p>
+                <p>
+                    <b>{{ message.user }}</b>: {{ message.content }} ---- <i>{{ message.timestamp }}</i>
+                    <label value="{{ message.mess_id }}" ></label>
+                </p>
                 {% endfor %}
             </div>
             <hr>
 
             <div id="type_message" class="col chat-foot">
-                <!-- <div class="input-group">
-                    <input autofocus autocomplete="off" class="form-control" id="message" aria-describedby="send"
-                        name="message" placeholder="Type your message here" type="text">
-                    <div class="input-group-append">
-                        <button id="send" class="btn btn-primary" type="submit">Send</button>
+                <form action="" method="post">
+                    <div class="form-group d-flex bd-highlight">
+                        <div class="p-2 flex-grow-1 bd-highlight">
+                            <input autofocus autocomplete="off" class="form-control" id="message" name="message" 
+                                placeholder="Type your message here" type="text">
+                        </div>
+                        <div class="p-2 bd-highlight">
+                            <button id="send" class="btn btn-primary" type="submit">Send</button>   
+                        </div>
                     </div>
-
-                </div> -->
-                <div class="form-group d-flex bd-highlight">
-                    <div class="p-2 flex-grow-1 bd-highlight">
-                        <input autofocus autocomplete="off" class="form-control" id="message" name="message" 
-                            placeholder="Type your message here" type="text">
-                    </div>
-                    <div class="p-2 bd-highlight">
-                        <button id="send" class="btn btn-primary" type="submit">Send</button>   
-                    </div>
-                </div>
-
+                </form>
             </div>
         </div>
     </main>

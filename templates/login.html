@@ -9,20 +9,17 @@ Welcome!
     <div class="py-5 text-center">
         <h2 class="pb-4">Welcome!</h2>
         <div id="name-no-exists" style="display: none">
-            <div class="form-group d-flex bd-highlight">
-                <div class="p-2 flex-grow-1 bd-highlight">
-                    <input id="name" autofocus autocomplete="off" class="form-control" name="name" 
-                    placeholder="Input your name here" type="text">
+            <form action="{{ url_for('channels') }}" method="post">
+                <div class="form-group d-flex bd-highlight">
+                    <div class="p-2 flex-grow-1 bd-highlight">
+                        <input id="name" autofocus autocomplete="off" class="form-control" name="name" 
+                        placeholder="Input your name here" type="text">
+                    </div>
+                    <div class="p-2 bd-highlight">
+                        <button id="start" class="btn btn-primary" type="submit">Start</button>
+                    </div>       
                 </div>
-                <div class="p-2 bd-highlight">
-                    <a href="{{ url_for('channels') }}">
-                        <button id="start" class="btn btn-primary">Start</button>
-                    </a>
-                </div>       
-            </div>
-            <!-- <a href="{{ url_for('channels') }}">
-                <button id="start" class="btn btn-primary">Start</button>
-            </a> -->
+            </form>
         </div>
         
         <div id="name-exists">
@@ -41,12 +38,6 @@ Welcome!
         document.querySelector('#name-no-exists').style.display = "none";
         document.querySelector('#name-exists').style.display = "none";
         
-        // // This is a function that redirect to last channel
-        // function reDirect () {
-        //     window.location.replace(localStorage.getItem('last_channel'));
-        //     // Clear previous lastChannel value
-        //     localStorage.removeItem('last_channel');
-        // };
         // Stay in page for 2 sec before redirect to last channel
         document.addEventListener ('DOMContentLoaded', setTimeout( () => {
             window.location.replace(localStorage.getItem('last_channel'));

@@ -80,6 +80,7 @@ def new_channel():
         
 @socketio.on('send message')
 def new_mess(data):
+    mess_id = data["mess_id"]
     user = data["user"]
     content = data["content"]
     timestamp = data["timestamp"]
@@ -90,10 +91,10 @@ def new_mess(data):
         del channel_list[channel_name][0]
     
     # Add message to global var channel_list
-    channel_list[channel_name].append({"user": user, "content": content, "timestamp": timestamp})
+    channel_list[channel_name].append({"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp})
 
     # Broadcast new message
-    emit('add new message', {"user": user, "content": content, "timestamp": timestamp}, broadcast=True)
+    emit('add new message', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 
 
