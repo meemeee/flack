@@ -68,16 +68,17 @@ ul {
     min-width: 500px;
 }
 
-label::after{
-    content: "\f1f8"; /* a trash bin */
-    color: lightgrey;
+.fa-trash-o {
+    color: rgb(180, 178, 178);
     margin-left: 8px;
     margin-bottom: 0;
     font-size: 1em;
-    font-family: FontAwesome;
-    display: inline-block; 
+}
+
+.fa-trash-o:hover {
+    color: rgb(94, 93, 93);
 }
 
 p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block tittle %}
-{{ channel }}
+Chat | {{ channel }}
 {% endblock %}
 
 {% block main %}
@@ -37,11 +37,15 @@
             <hr>
             <div id="allmessages" class="col chat-body">
                 {% for message in messages %}
-                <p id="{{ message.mess_id }}" class="single-message">
-                    <b>{{ message.user }}:</b> {{ message.content }} ---- <i>{{ message.timestamp }}</i>
-                    <!-- <a  href="#"><i class="fa fa-trash-o"></i></a> -->
-                   <label value="{{ message.mess_id }}"></label>
-                </p>
+                    <p id="{{ message.mess_id }}" class="single-message">
+                    <b>{{ message.user }}:</b> {{ message.content }} 
+                    
+                    <!-- Display trashbin and timestamp if available -->
+                    {% if message.content != "Message has been deleted." %}    
+                        ---- <i>{{ message.timestamp }}</i>            
+                        <a class="trashbin" value="{{ message.mess_id }}" href="#"><i class="fa fa-trash-o"></i></a>    
+                    {% endif %}
+                    </p>
                 {% endfor %}
             </div>
             <hr>

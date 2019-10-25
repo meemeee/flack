@@ -104,10 +104,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (data.messages.length === 0) {
                         var newchannel_content = `<i>This is the beginning of <b>${data.channel}</b> channel.</i>`;
                         document.querySelector('#allmessages').innerHTML = newchannel_content;
-                        // // Remove when there is 1st message
-                        // document.querySelector('#send').onclick = () => {
-                        //     newchannel_content = [];
-                        // };
+                        // Remove when there is 1st message
+                        document.querySelector('#send').onclick = () => {
+                            document.querySelector('#allmessages').innerHTML = "";
+                        };
                     }
                     else {
                         // Loop through messages
