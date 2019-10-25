@@ -57,25 +57,9 @@ def change_channel():
 #             print(message["mess_id"])
 #     return jsonify({"success": False})
     
-@socketio.on('delete message')
 
-def delete(data):
-    print(data)
-    mess_id = data["mess_id"]
-    channel_name = data["channel"]
-    user = data["user"]
 
-    # Delete message from memory
-    messages = channel_list[channel_name]
-    print(messages)
-    for message in messages:
-        if message["mess_id"] == int(mess_id):
-            content = "Message has been deleted."
-            print(messages)
-            print("deleted")
-            break
-    # Broadcast new message
-    emit('deletion complete', {"mess_id": mess_id, "user": user, "content": content}, broadcast=True)
+
 
 @app.route("/channels/<string:channel>")
 def channel(channel):
@@ -134,7 +118,24 @@ def new_mess(data):
     # Broadcast new message
     emit('add new message', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
+@socketio.on('delete message')
+def delete(data):
+    mess_id = data["mess_id"]
+    channel_name = data["channel"]
+    user = data["user"]
 
+    # Delete message from memory
+    messages = channel_list[channel_name]
+    for message in messages:
+        if message["mess_id"] == int(mess_id):
+            content = "Message has been deleted."
+            timestamp = []
+            message["content"] = content
+            message["timestamp"] = timestamp
+            print("deleted")
+            break
+    # Broadcast new message
+    emit('deletion complete', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 
 

@@ -74,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a message is deleted, update the whole channel
     socket.on('deletion complete', data => {
+        console.log(data);
         del_mess = document.getElementById(`${data.mess_id}`);
         del_mess.innerHTML = `<b>${data.user}:</b> <i>${data.content}</i>`;
        
@@ -115,15 +116,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         var text = "";
                         var i;
                         for (i = 0; i < data.messages.length; i++) {
-                            text += "<p id=" + data.messages[i]["mess_id"] + "class='single-message'><b>" 
-                            + data.messages[i]["user"] + "</b>: " 
-                            + data.messages[i]["content"] + " ---- <i>" 
-                            + data.messages[i]["timestamp"] + "</i>"
-                            +"<label value=" + data.messages[i]["mess_id"] + "></label></p>";
+                            // Do not display trashbin if message has been deleted
+                            if (data.messages[i]["content"].localeCompare("Message has been deleted.") != 0) {
+                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
+                                + data.messages[i]["user"] + "</b>: " 
+                                + data.messages[i]["content"] + " ---- <i>" 
+                                + data.messages[i]["timestamp"] + "</i>"
+                                +"<label value=" + data.messages[i]["mess_id"] + "></label></p>";
+                            }
+                            else {
+                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
+                                + data.messages[i]["user"] + "</b>: " 
+                                + data.messages[i]["content"]
+                            }
                         }
-
+                        
                         document.querySelector('#allmessages').innerHTML = text;
                     }
+                    // Update delete function for the whole page
+                    deletemess();
 
                     // Display input message field
                     document.querySelector('#type_message').style.display = "block";
