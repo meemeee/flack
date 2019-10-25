@@ -32,19 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#message').value = '';
             };
         };
-        deletemess();
-
-        
-        
-        
+        deletemess();      
     });
+    
     // Emit delete action when trashbin is clicked on
     function deletemess () {
-        document.querySelectorAll('label').forEach(label => {
-            label.onclick = () => {
+        document.querySelectorAll('.trashbin').forEach(a => {
+            a.onclick = () => {
                 var result = confirm("Do you want to remove this message?");
                 if (result) {
-                    const id = label.getAttribute('value');
+                    const id = a.getAttribute('value');
                     const user = localStorage.getItem('name');
                     const channel_name = document.querySelector('#channel_title').innerHTML;
 
@@ -60,8 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
         mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
         mess.setAttribute('class', 'single-message');
         mess.id = data.mess_id;
-        const trashbin = document.createElement('label');
+        const trashbin = document.createElement('a');
+        trashbin.setAttribute('class', 'trashbin');
         trashbin.setAttribute('value', `${data.mess_id}`);
+        trashbin.setAttribute('href', '#');
+        const icon = document.createElement('i');
+        icon.setAttribute('class', 'fa fa-trash-o');
+        trashbin.append(icon);
         // addtrashbin(trashbin);
         mess.append(trashbin);
         allmess.append(mess);
@@ -69,17 +71,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Scroll to to bottom to see latest messages
         allmess.scrollTop = allmess.scrollHeight;
-
     });
 
     // When a message is deleted, update the whole channel
     socket.on('deletion complete', data => {
-        console.log(data);
         del_mess = document.getElementById(`${data.mess_id}`);
-        del_mess.innerHTML = `<b>${data.user}:</b> <i>${data.content}</i>`;
-       
+        del_mess.innerHTML = `<b>${data.user}:</b> <i>${data.content}</i>`;      
     });
-
 
     // Create Ajax request when changing channels
     document.querySelectorAll('.single-channel').forEach(li => {
@@ -122,7 +120,9 @@ document.addEventListener('DOMContentLoaded', () => {
                                 + data.messages[i]["user"] + "</b>: " 
                                 + data.messages[i]["content"] + " ---- <i>" 
                                 + data.messages[i]["timestamp"] + "</i>"
-                                +"<label value=" + data.messages[i]["mess_id"] + "></label></p>";
+                                +"<a" + " class=\"trashbin\"" 
+                                + "value=" + data.messages[i]["mess_id"] 
+                                + " href=\"#\"><i class=\"fa fa-trash-o\"></i></a></p>";
                             }
                             else {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
@@ -159,16 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return false;
 
         };
-    });
-    
-    // // Create Ajax request when deleting a message
-  
-    // document.querySelectorAll('label').forEach(label => {
-    //     label.onclick = addtrashbin(label);
-    //     console.log("1");
-    // });
-
-    
+    });    
 });
 
 
@@ -176,66 +167,3 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('unload', event => {
     localStorage.setItem('last_channel', window.location.href);
 });
-
-// // Emit delete action when trashbin is clicked on
-// function deletemess(item) {
-//     // Connect to websocket
-
-//     var result = confirm("Do you want to remove this message?");
-//     if (result) {
-//         const id = item;
-//         const channel_name = document.title;
-
-//         socket.emit('delete message', {"channel": channel_name, "mess_id": id});
-//     };
-        
-// };
-
-
-
-
-
-
-
-// function addtrashbin(item) {
-//     var result = confirm("Do you want to remove this message?");
-//     if (result) {
-//         const id = item.getAttribute('value');
-//         const channel_name = document.title;
-
-//         // Initialize new request
-//         const request = new XMLHttpRequest();
-//         request.open('POST', '/ajax_del');
-
-//         // Callback function for when request completes
-//         request.onload = () => {
-//             // Extract JSON data from request
-//             const data = JSON.parse(request.responseText);
-
-//             if (data.success) {           
-//                 del_mess = document.getElementById(`${data.mess_id}`);
-//                 del_mess.remove();
-//             }
-//             else {
-//                 alert('There was an error.');
-//             }
-//         };
-
-//         // Add data to send with request
-//         const data = new FormData();
-//         data.append('channel_name', channel_name);
-//         data.append('mess_id', id);
-
-//         // Send request
-//         request.send(data);
-//         return false;
-//     };
-
-    
-// }
-
-
-
-
-
-
