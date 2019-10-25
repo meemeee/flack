@@ -38,41 +38,44 @@ def change_channel():
     print(messages)
     return jsonify({"success": True, "messages":messages, "channel":channel})
 
-@app.route("/ajax_del", methods=["POST"])
-def delete_message():
+# @app.route("/ajax_del", methods=["POST"])
+# def delete_message():
 
-    """ Delete a single message """
+#     """ Delete a single message """
    
-    mess_id = request.form.get("mess_id")
-    channel = request.form.get("channel_name")
-    
-    # Delete message from memory
-    messages = channel_list[channel]
-    for message in messages:
-        if message["mess_id"] == mess_id:
-            del message
-            return jsonify({"success": True, "messages": mess_id})
-        else:
-            return jsonify({"success": False})
-    
-# @socketio.on('delete message')
-
-# def delete(data):
-#     print(data)
-#     mess_id = data["mess_id"]
-#     channel_name = data["channel"]
-
+#     mess_id = request.form.get("mess_id")
+#     channel = request.form.get("channel_name")
+#     print(mess_id)
 #     # Delete message from memory
-#     messages = channel_list[channel_name]
+#     messages = channel_list[channel]
+#     print(messages)
 #     for message in messages:
 #         if message["mess_id"] == mess_id:
 #             del message
-#             print("deleted")
-#             break
+#             return jsonify({"success": True, "mess_id": mess_id})
 #         else:
-#             print("cannot find message")
-#     # Broadcast new message
-#     emit('deletion complete', {"mess_id": mess_id}, broadcast=True)
+#             print(message["mess_id"])
+#     return jsonify({"success": False})
+    
+@socketio.on('delete message')
+
+def delete(data):
+    print(data)
+    mess_id = data["mess_id"]
+    channel_name = data["channel"]
+    user = data["user"]
+
+    # Delete message from memory
+    messages = channel_list[channel_name]
+    print(messages)
+    for message in messages:
+        if message["mess_id"] == int(mess_id):
+            content = "Message has been deleted."
+            print(messages)
+            print("deleted")
+            break
+    # Broadcast new message
+    emit('deletion complete', {"mess_id": mess_id, "user": user, "content": content}, broadcast=True)
 
 @app.route("/channels/<string:channel>")
 def channel(channel):

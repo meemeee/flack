@@ -37,9 +37,10 @@
             <hr>
             <div id="allmessages" class="col chat-body">
                 {% for message in messages %}
-                <p id="{{ loop.index0 }}" class="single-message">
+                <p id="{{ message.mess_id }}" class="single-message">
                     <b>{{ message.user }}:</b> {{ message.content }} ---- <i>{{ message.timestamp }}</i>
-                    <label value="{{ loop.index0 }}" ></label>
+                    <!-- <a  href="#"><i class="fa fa-trash-o"></i></a> -->
+                   <label value="{{ message.mess_id }}"></label>
                 </p>
                 {% endfor %}
             </div>

@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When connected, configure send button
     socket.on('connect', () => {
-        console.log("websocket connected");
         // Emit message whenever 'Send' button is clicked on      
         document.querySelector('form').onsubmit = event => {
             event.preventDefault();
@@ -23,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             
             else {
-                const id = count++;
+                const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 const user = localStorage.getItem('name');
                 const timestamp = new Date().toISOString().split('T')[0] + " " + new Date().toISOString().split('T')[1].split('.')[0];
@@ -33,21 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector('#message').value = '';
             };
         };
+        deletemess();
 
-        // // Emit delete action when trashbin is clicked on
-        // document.querySelectorAll('label').forEach(label => {
-        //     label.onclick = () => {
-        //         var result = confirm("Do you want to remove this message?");
-        //         if (result) {
-        //             const id = label.getAttribute('value');
-        //             const channel_name = document.title;
-
-        //             socket.emit('delete message', {"channel": channel_name, "mess_id": id});
-        //         };
-        //     }       
-        // });
+        
+        
         
     });
+    // Emit delete action when trashbin is clicked on
+    function deletemess () {
+        document.querySelectorAll('label').forEach(label => {
+            label.onclick = () => {
+                var result = confirm("Do you want to remove this message?");
+                if (result) {
+                    const id = label.getAttribute('value');
+                    const user = localStorage.getItem('name');
+                    const channel_name = document.querySelector('#channel_title').innerHTML;
+
+                    socket.emit('delete message', {"channel": channel_name, "mess_id": id, "user": user});
+                };
+            }       
+        });
+    }
 
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
@@ -60,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // addtrashbin(trashbin);
         mess.append(trashbin);
         allmess.append(mess);
-        
+        deletemess();
         
         // Scroll to to bottom to see latest messages
         allmess.scrollTop = allmess.scrollHeight;
@@ -68,12 +73,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // When a message is deleted, update the whole channel
-    // socket.on('deletion complete', data => {
-    //     console.log("1");
-    //     del_mess = document.getElementById(`${data.mess_id}`);
-    //     console.log("2");
-    //     del_mess.remove();
-    // });
+    socket.on('deletion complete', data => {
+        del_mess = document.getElementById(`${data.mess_id}`);
+        del_mess.innerHTML = `<b>${data.user}:</b> <i>${data.content}</i>`;
+       
+    });
 
 
     // Create Ajax request when changing channels
@@ -146,12 +150,14 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
     
-    // Create Ajax request when deleting a message
+    // // Create Ajax request when deleting a message
   
-    document.querySelectorAll('label').forEach(label => {
-        label.onclick = addtrashbin(label);
-        console.log("1");
-    });
+    // document.querySelectorAll('label').forEach(label => {
+    //     label.onclick = addtrashbin(label);
+    //     console.log("1");
+    // });
+
+    
 });
 
 
@@ -160,42 +166,62 @@ window.addEventListener('unload', event => {
     localStorage.setItem('last_channel', window.location.href);
 });
 
-function addtrashbin(item) {
-    var result = confirm("Do you want to remove this message?");
-    if (result) {
-        const id = item.getAttribute('value');
-        const channel_name = document.title;
+// // Emit delete action when trashbin is clicked on
+// function deletemess(item) {
+//     // Connect to websocket
 
-        // Initialize new request
-        const request = new XMLHttpRequest();
-        request.open('POST', '/ajax_del');
+//     var result = confirm("Do you want to remove this message?");
+//     if (result) {
+//         const id = item;
+//         const channel_name = document.title;
 
-        // Callback function for when request completes
-        request.onload = () => {
-            // Extract JSON data from request
-            const data = JSON.parse(request.responseText);
+//         socket.emit('delete message', {"channel": channel_name, "mess_id": id});
+//     };
+        
+// };
 
-            if (data.success) {           
-                del_mess = document.getElementById(`${data.mess_id}`);
-                del_mess.remove();
-            }
-            else {
-                alert('There was an error.');
-            }
-        };
 
-        // Add data to send with request
-        const data = new FormData();
-        data.append('channel_name', channel_name);
-        data.append('mess_id', id);
 
-        // Send request
-        request.send(data);
-        return false;
-    };
+
+
+
+
+// function addtrashbin(item) {
+//     var result = confirm("Do you want to remove this message?");
+//     if (result) {
+//         const id = item.getAttribute('value');
+//         const channel_name = document.title;
+
+//         // Initialize new request
+//         const request = new XMLHttpRequest();
+//         request.open('POST', '/ajax_del');
+
+//         // Callback function for when request completes
+//         request.onload = () => {
+//             // Extract JSON data from request
+//             const data = JSON.parse(request.responseText);
+
+//             if (data.success) {           
+//                 del_mess = document.getElementById(`${data.mess_id}`);
+//                 del_mess.remove();
+//             }
+//             else {
+//                 alert('There was an error.');
+//             }
+//         };
+
+//         // Add data to send with request
+//         const data = new FormData();
+//         data.append('channel_name', channel_name);
+//         data.append('mess_id', id);
+
+//         // Send request
+//         request.send(data);
+//         return false;
+//     };
 
     
-}
+// }
 
 
 
