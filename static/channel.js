@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             
             else {
+                if (document.querySelector('#welcome')) 
+                    document.querySelector('#allmessages').innerHTML = "";
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 const user = localStorage.getItem('name');
@@ -126,8 +128,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             }
                             else {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                                + data.messages[i]["user"] + "</b>: " 
-                                + data.messages[i]["content"]
+                                + data.messages[i]["user"] + "</b>: <i>" 
+                                + data.messages[i]["content"] +"</i>"
                             }
                         }
                         

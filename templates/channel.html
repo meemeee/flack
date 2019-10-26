@@ -36,16 +36,26 @@ Chat | {{ channel }}
             </div>
             <hr>
             <div id="allmessages" class="col chat-body">
-                {% for message in messages %}
-                    <p id="{{ message.mess_id }}" class="single-message">
-                    <b>{{ message.user }}:</b> {{ message.content }} 
-                    
+                {% for message in messages %}  
                     <!-- Display trashbin and timestamp if available -->
-                    {% if message.content != "Message has been deleted." %}    
-                        ---- <i>{{ message.timestamp }}</i>            
-                        <a class="trashbin" value="{{ message.mess_id }}" href="#"><i class="fa fa-trash-o"></i></a>    
+                    {% if message.content != "Message has been deleted." %} 
+                        <p id="{{ message.mess_id }}" class="single-message">
+                            <b>{{ message.user }}:</b> {{ message.content }}   
+                            ---- <i>{{ message.timestamp }}</i>            
+                            <a class="trashbin" value="{{ message.mess_id }}" href="#"><i class="fa fa-trash-o"></i></a>   
+                        </p>
+                    {% else %}
+                        <p id="{{ message.mess_id }}" class="single-message">
+                            <b>{{ message.user }}:</b> <i>{{ message.content }}</i>  
+                        </p>
                     {% endif %}
-                    </p>
+
+                <!-- Display welcome mess if there is a new channel -->
+                {% else %}
+                <p id="welcome">
+                    <i>This is the beginning of <b>{{ channel }}</b> channel.</i>
+                </p>
+                
                 {% endfor %}
             </div>
             <hr>

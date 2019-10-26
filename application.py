@@ -38,28 +38,6 @@ def change_channel():
     print(messages)
     return jsonify({"success": True, "messages":messages, "channel":channel})
 
-# @app.route("/ajax_del", methods=["POST"])
-# def delete_message():
-
-#     """ Delete a single message """
-   
-#     mess_id = request.form.get("mess_id")
-#     channel = request.form.get("channel_name")
-#     print(mess_id)
-#     # Delete message from memory
-#     messages = channel_list[channel]
-#     print(messages)
-#     for message in messages:
-#         if message["mess_id"] == mess_id:
-#             del message
-#             return jsonify({"success": True, "mess_id": mess_id})
-#         else:
-#             print(message["mess_id"])
-#     return jsonify({"success": False})
-    
-
-
-
 
 @app.route("/channels/<string:channel>")
 def channel(channel):
@@ -96,7 +74,7 @@ def new_channel():
         else:
             channel_list.update({name: []})
 
-        return redirect("/channels")
+        return redirect("/channels/" + name)
 
 
         
