@@ -7,15 +7,15 @@ All Channels
 {% block main %}
 <div class="row flex-nowrap">
     <div id="all_channels" class="p-2 flex-grow-0 flex-shrink-0 bd-sidebar" style="min-width: 200px">
-        <div class="sidebar-head">
+        <div class="col sidebar-head">
             <h4 >All channels</h4>
             <p id="user_name"></p>
         </div>
         <hr>
-        <ul class="py-3">
+        <ul class="col py-3">
             {% for item in channels %}
             <li class="single-channel" data-name="{{ item }}">
-                <a href="/channels/{{ item }}">
+                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
                     # {{ item }}
                 </a>
             </li>
@@ -24,7 +24,9 @@ All Channels
             {% endfor %}
         </ul>
         <div>
-            <a href="{{ url_for('new_channel') }}">Create a new channel</a>
+            <a href="{{ url_for('new_channel') }}" style="color:rgb(54, 54, 54)">
+                <i class="fa fa-plus-circle"></i> Create a new channel
+            </a>
         </div>
         
     </div>
@@ -35,7 +37,7 @@ All Channels
                 <h2 id="channel_title">Welcome</h2>
             </div>
             <hr>
-            <div id="allmessages" class="col chat-body">
+            <div id="allmessages" class="col chat-body py-3">
                 Select a channel to join.
             </div>
 

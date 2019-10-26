@@ -27,7 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 const user = localStorage.getItem('name');
-                const timestamp = new Date().toISOString().split('T')[0] + " " + new Date().toISOString().split('T')[1].split('.')[0];
+                // const timestamp = new Date().toISOString().split('T')[0] + " " + new Date().toISOString().split('T')[1].split('.')[0];
+                const timestamp = new Date().getHours() + ":" + new Date().getMinutes();
+                
                 socket.emit('send message', {"channel": channel, "mess_id": id, "user": user, "content": message, "timestamp": timestamp});
                 
                 // Clear input field
@@ -40,7 +42,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Emit delete action when trashbin is clicked on
     function deletemess () {
         document.querySelectorAll('.trashbin').forEach(a => {
-            a.onclick = () => {
+            a.onclick = event => {
+                event.preventDefault();
                 var result = confirm("Do you want to remove this message?");
                 if (result) {
                     const id = a.getAttribute('value');
@@ -60,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#allmessages').innerHTML = "";
 
         const mess = document.createElement('p');
-        mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
+        mess.innerHTML = `<b>${data.user}:</b> ${data.content} <span id="timestamp">${data.timestamp}</span>`;
         mess.setAttribute('class', 'single-message');
         mess.id = data.mess_id;
         const trashbin = document.createElement('a');
@@ -82,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a message is deleted, update the whole channel
     socket.on('deletion complete', data => {
         del_mess = document.getElementById(`${data.mess_id}`);
-        del_mess.innerHTML = `<b>${data.user}:</b> <i>${data.content}</i>`;      
+        del_mess.innerHTML = `<b>${data.user}:</b> <span class="deleted">${data.content}</span>`;      
     });
 
     // Create Ajax request when changing channels
@@ -126,16 +129,16 @@ document.addEventListener('DOMContentLoaded', () => {
                             if (data.messages[i]["content"].localeCompare("Message has been deleted.") != 0) {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
                                 + data.messages[i]["user"] + "</b>: " 
-                                + data.messages[i]["content"] + " ---- <i>" 
-                                + data.messages[i]["timestamp"] + "</i>"
+                                + data.messages[i]["content"] + " <span id=\"timestamp\">" 
+                                + data.messages[i]["timestamp"] + "</span>"
                                 +"<a" + " class=\"trashbin\"" 
                                 + "value=" + data.messages[i]["mess_id"] 
                                 + " href=\"#\"><i class=\"fa fa-trash-o\"></i></a></p>";
                             }
                             else {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                                + data.messages[i]["user"] + "</b>: <i>" 
-                                + data.messages[i]["content"] +"</i>"
+                                + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
+                                + data.messages[i]["content"] +"</span>"
                             }
                         }
                         
@@ -143,6 +146,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     // Update delete function for the whole page
                     deletemess();
+
+                    // Scroll to to bottom to see latest messages
+                    var allmess = document.querySelector('#allmessages');    
+                    allmess.scrollTop = allmess.scrollHeight;
 
                     // Display input message field
                     document.querySelector('#type_message').style.display = "block";

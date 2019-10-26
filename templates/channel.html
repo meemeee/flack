@@ -7,12 +7,12 @@ Chat | {{ channel }}
 {% block main %}
 <div class="row flex-nowrap">
     <div id="all_channels" class="p-2 flex-grow-0 flex-shrink-0 bd-sidebar" style="min-width: 200px">
-        <div class="sidebar-head">
+        <div class="col sidebar-head">
             <h4 >All channels</h4>
             <p id="user_name"></p>
         </div>
         <hr>
-        <ul id="channel_panel" class="py-3">
+        <ul id="channel_panel" class="col py-3">
             {% for item in channels %}
                 {% if item == channel %}
                 <li class="single-channel active" data-name="{{ item }}">
@@ -42,18 +42,19 @@ Chat | {{ channel }}
                 <h2 id="channel_title">{{ channel }}</h2>
             </div>
             <hr>
-            <div id="allmessages" class="col chat-body">
+            <div id="allmessages" class="col chat-body py-3">
                 {% for message in messages %}  
                     <!-- Display trashbin and timestamp if available -->
                     {% if message.content != "Message has been deleted." %} 
                         <p id="{{ message.mess_id }}" class="single-message">
                             <b>{{ message.user }}:</b> {{ message.content }}   
-                            ---- <i>{{ message.timestamp }}</i>            
+                            <span id="timestamp">{{ message.timestamp }}</span>            
                             <a class="trashbin" value="{{ message.mess_id }}" href="#"><i class="fa fa-trash-o"></i></a>   
                         </p>
                     {% else %}
                         <p id="{{ message.mess_id }}" class="single-message">
-                            <b>{{ message.user }}:</b> <i>{{ message.content }}</i>  
+                            <b>{{ message.user }}:</b> 
+                            <span class="deleted">{{ message.content }}</span>  
                         </p>
                     {% endif %}
 

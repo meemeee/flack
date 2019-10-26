@@ -73,14 +73,14 @@ ul {
 }
 
 .fa-trash-o {
-    color: rgb(180, 178, 178);
+    color: rgb(153, 152, 152);
     margin-left: 8px;
     margin-bottom: 0;
     font-size: 1em;
 }
 
 .fa-trash-o:hover {
-    color: rgb(94, 93, 93);
+    color: rgb(78, 78, 78);
 }
 
 p {
@@ -89,4 +89,14 @@ p {
 
 .active {
     font-weight: bold;
+}
+
+.deleted {
+    color: rgb(180, 178, 178);
+    font-style: italic;
+}
+#timestamp {
+    color: rgb(145, 145, 145);
+    margin-left: 20px;
+    font-size: 95%;
 }
