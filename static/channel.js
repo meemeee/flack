@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 const user = localStorage.getItem('name');
-                // const timestamp = new Date().toISOString().split('T')[0] + " " + new Date().toISOString().split('T')[1].split('.')[0];
                 const timestamp = new Date().getHours() + ":" + new Date().getMinutes();
                 
                 socket.emit('send message', {"channel": channel, "mess_id": id, "user": user, "content": message, "timestamp": timestamp});
@@ -62,8 +61,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname === "/channels/" + `${data.channel}`) {
             // if this is the 1st message, clear newchannel_content first
             if (!document.querySelector('.single-message'))
-            document.querySelector('#allmessages').innerHTML = "";
+                document.querySelector('#allmessages').innerHTML = "";
 
+            // Create required elements in a message
             const mess = document.createElement('p');
             mess.innerHTML = `<b>${data.user}:</b> ${data.content}`;
             mess.setAttribute('class', 'single-message');
@@ -83,6 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             mess.append(optional);
             allmess.append(mess);
+            
+            // Update delete function for the whole page
             deletemess();
             
             // Scroll to to bottom to see latest messages
@@ -90,8 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // else, subtly alert new messages on side bar
-        const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
-            // Discard action if channel is currently unread
+        else {
+            const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
+            // Discard action if there has been an earlier alert
             if (newmess_channel.classList.contains('unread')) 
                 return false;
             else {
@@ -100,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 newmess_channel.setAttribute('class', 'unread');
                 newmess_channel.append(newmess_alert);
             }
-        
+        }   
     });
 
     // When a message is deleted, update the whole channel
@@ -135,8 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Toggle "active" class in channel name
                     if (document.querySelector('.active'))
-                        document.querySelector('.active').classList.remove("active");
-                    
+                        document.querySelector('.active').classList.remove("active");      
                     li.classList.add("active");
                     
                     // Replacing content on layout
@@ -155,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Do not display trashbin if message has been deleted
                             if (data.messages[i]["content"].localeCompare("Message has been deleted.") != 0) {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
-                                + "<b>" + data.messages[i]["user"] + "</b>: " 
+                                + "<b>" + data.messages[i]["user"] + ":</b> " 
                                 + data.messages[i]["content"] 
                                 + "<span class=\"optional\">" + data.messages[i]["timestamp"]
                                 + "<a class=\"trashbin\"" 
@@ -168,23 +170,20 @@ document.addEventListener('DOMContentLoaded', () => {
                                 + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
                                 + data.messages[i]["content"] +"</span>"
                             }
-                        }
-                        
+                        }                       
                         document.querySelector('#allmessages').innerHTML = text;
                     }
                     // Update delete function for the whole page
                     deletemess();
 
-                    // Scroll to to bottom to see latest messages
-                    var allmess = document.querySelector('#allmessages');    
+                    // Scroll to to bottom to see latest messages    
                     allmess.scrollTop = allmess.scrollHeight;
 
                     // Display input message field
                     document.querySelector('#type_message').style.display = "block";
                     
                     // Update URL
-                    history.pushState({"id": data.channel}, "", "/channels/" + data.channel); 
-                 
+                    history.pushState({"id": data.channel}, "", "/channels/" + data.channel);             
                 }
 
                 else {
@@ -203,7 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });    
 });
-
 
 // Remembering the Channel before closing window
 window.addEventListener('unload', event => {

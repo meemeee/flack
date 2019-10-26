@@ -6,7 +6,7 @@ Welcome!
 
 {% block main %}
 <div class="container-fluid col-4 col-md-4 col-xl-4 py-md-5 py-sm-5">
-    <div class="py-5 text-center">
+    <div class="py-5 text-center" style="min-width: 400px">
         <h2 class="pb-4">Welcome!</h2>
         <div id="name-no-exists" style="display: none">
             <form action="{{ url_for('channels') }}" method="post">
@@ -32,22 +32,7 @@ Welcome!
 </div>
 
 <script>
-    // Redirect to last channel if this is not the first visit
-    if (localStorage.getItem('last_channel')) {
-        // Only show Welcome
-        document.querySelector('#name-no-exists').style.display = "none";
-        document.querySelector('#name-exists').style.display = "none";
-        
-        // Stay in page for 2 sec before redirect to last channel
-        document.addEventListener ('DOMContentLoaded', setTimeout( () => {
-            window.location.replace(localStorage.getItem('last_channel'));
-            // Clear previous lastChannel value
-            localStorage.removeItem('last_channel');
-        }
-        , 2000));     
-    };
-
-    // No last channel: Display form to acquire name if this is the first time, else no form
+    // Display form to acquire name if this is the first time, else no form
     if (!localStorage.getItem('name')) {
         document.querySelector('#name-no-exists').style.display = "block";
         document.querySelector('#name-exists').style.display = "none";
@@ -75,7 +60,23 @@ Welcome!
     }
 
     else {
-        document.querySelector('#name-exists').style.display = "block";
+        // Redirect to last channel if this is not the first visit
+        if (localStorage.getItem('last_channel')) {
+            // Only show Welcome
+            document.querySelector('#name-no-exists').style.display = "none";
+            document.querySelector('#name-exists').style.display = "none";
+            
+            // Stay in page for 2 sec before redirect to last channel
+            document.addEventListener ('DOMContentLoaded', setTimeout( () => {
+                window.location.replace(localStorage.getItem('last_channel'));
+                // Clear previous lastChannel value
+                localStorage.removeItem('last_channel');
+            }
+            , 2000));     
+        }
+        else {
+            document.querySelector('#name-exists').style.display = "block";
+        }       
     }
 
 </script>

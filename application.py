@@ -12,11 +12,7 @@ channel_list = {}
 
 @app.route("/")
 def index():
-    return "Project 2: TODO"
-
-@app.route("/login")
-def login():
-    return render_template("login.html")
+    return render_template("index.html")
 
 @app.route("/channels", methods=["GET", "POST"])
 def channels():
@@ -55,8 +51,8 @@ def channel(channel):
 @app.route("/new_channel", methods=["POST", "GET"])
 def new_channel():
 
-    # User reached via redirect or clicking a link
     """ Create a new channel """
+    # User reached via redirect or clicking a link
     if request.method == "GET":
         return render_template("create.html")
     
@@ -77,7 +73,6 @@ def new_channel():
         return redirect("/channels/" + name)
 
 
-        
 @socketio.on('send message')
 def new_mess(data):
     mess_id = data["mess_id"]
@@ -86,7 +81,7 @@ def new_mess(data):
     timestamp = data["timestamp"]
     channel_name = data["channel"]
 
-    # Before add new message, remove 1 last message if len exceeds
+    # Before adding new message, remove 1 last message if len exceeds
     if len(channel_list[channel_name]) == 100:
         del channel_list[channel_name][0]
     

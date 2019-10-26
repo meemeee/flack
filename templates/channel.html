@@ -63,12 +63,11 @@ Chat | {{ channel }}
                         </p>
                     {% endif %}
 
-                <!-- Display welcome mess if there is a new channel -->
+                <!-- Display welcome mess if this is a new channel -->
                 {% else %}
                 <p id="welcome">
                     <i>This is the beginning of <b>{{ channel }}</b> channel.</i>
                 </p>
-                
                 {% endfor %}
             </div>
 
