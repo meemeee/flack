@@ -66,8 +66,8 @@ def new_channel():
         if not name:
             return render_template("error.html", message="You must provide channel name.")
         
-        elif len(name) > 25:
-            return render_template("error.html", message="Channel name must not exceed 25 characters.")
+        elif len(name) > 25 or ' ' in name:
+            return render_template("error.html", message="Channel name must not exceed 25 characters or contain space.")
         
         elif name in channel_list:
             return render_template("error.html", message="Unavailable channel name. Please choose another.")
@@ -94,7 +94,7 @@ def new_mess(data):
     channel_list[channel_name].append({"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp})
 
     # Broadcast new message
-    emit('add new message', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
+    emit('add new message', {"channel": channel_name, "mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 @socketio.on('delete message')
 def delete(data):

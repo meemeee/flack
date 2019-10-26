@@ -58,28 +58,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
-        // if this is the 1st message, clear newchannel_content first
-        if (!document.querySelector('.single-message'))
+        // Only update message if the same channel is open
+        console.log("/channels/" + `${data.channel}`)
+        if (window.location.pathname === "/channels/" + `${data.channel}`) {
+            // if this is the 1st message, clear newchannel_content first
+            if (!document.querySelector('.single-message'))
             document.querySelector('#allmessages').innerHTML = "";
 
-        const mess = document.createElement('p');
-        mess.innerHTML = `<b>${data.user}:</b> ${data.content} <span id="timestamp">${data.timestamp}</span>`;
-        mess.setAttribute('class', 'single-message');
-        mess.id = data.mess_id;
-        const trashbin = document.createElement('a');
-        trashbin.setAttribute('class', 'trashbin');
-        trashbin.setAttribute('value', `${data.mess_id}`);
-        trashbin.setAttribute('href', '#');
-        const icon = document.createElement('i');
-        icon.setAttribute('class', 'fa fa-trash-o');
-        trashbin.append(icon);
-        // addtrashbin(trashbin);
-        mess.append(trashbin);
-        allmess.append(mess);
-        deletemess();
+            const mess = document.createElement('p');
+            mess.innerHTML = `<b>${data.user}:</b> ${data.content} <span id="timestamp">${data.timestamp}</span>`;
+            mess.setAttribute('class', 'single-message');
+            mess.id = data.mess_id;
+            const trashbin = document.createElement('a');
+            trashbin.setAttribute('class', 'trashbin');
+            trashbin.setAttribute('value', `${data.mess_id}`);
+            trashbin.setAttribute('href', '#');
+            const icon = document.createElement('i');
+            icon.setAttribute('class', 'fa fa-trash-o');
+            trashbin.append(icon);
+            mess.append(trashbin);
+            allmess.append(mess);
+            deletemess();
+            
+            // Scroll to to bottom to see latest messages
+            allmess.scrollTop = allmess.scrollHeight;
+        }
         
-        // Scroll to to bottom to see latest messages
-        allmess.scrollTop = allmess.scrollHeight;
     });
 
     // When a message is deleted, update the whole channel
