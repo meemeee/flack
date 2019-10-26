@@ -98,6 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.success) {
                     // Replacing page title
                     document.title = "Chat | " + data.channel;
+
+                    // Replacing "active" class in channel name
+                    if (document.querySelector('.active'))
+                        document.querySelector('.active').classList.remove("active");
+                    
+                    li.classList.add("active");
                     
                     // Replacing content on layout
                     document.querySelector('#channel_title').innerHTML = data.channel;

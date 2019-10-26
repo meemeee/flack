@@ -12,13 +12,18 @@ Chat | {{ channel }}
             <p id="user_name"></p>
         </div>
         <hr>
-        <ul class="py-3">
+        <ul id="channel_panel" class="py-3">
             {% for item in channels %}
-            <li class="single-channel" data-name="{{ item }}">
-                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
-                    # {{ item }}
-                </a>
-            </li>
+                {% if item == channel %}
+                <li class="single-channel active" data-name="{{ item }}">
+                {% else %}
+                <li class="single-channel" data-name="{{ item }}">
+                {% endif %}
+                    <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)"> 
+                        # {{ item }}
+                    </a>
+                </li>
+                
             {% else %}
                 <i>There's no channel yet.</i>
             {% endfor %}
