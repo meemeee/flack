@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
         // Only update message if the same channel is open
-        console.log("/channels/" + `${data.channel}`)
         if (window.location.pathname === "/channels/" + `${data.channel}`) {
             // if this is the 1st message, clear newchannel_content first
             if (!document.querySelector('.single-message'))
@@ -83,6 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
             // Scroll to to bottom to see latest messages
             allmess.scrollTop = allmess.scrollHeight;
         }
+
+        // else, subtly alert new messages on side bar
+        const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
+            // Discard action if channel is currently unread
+            if (newmess_channel.classList.contains('unread')) 
+                return false;
+            else {
+                const newmess_alert = document.createElement('i');
+                newmess_alert.setAttribute('class', 'fa fa-commenting-o');
+                newmess_channel.setAttribute('class', 'unread');
+                newmess_channel.append(newmess_alert);
+            }
         
     });
 
@@ -104,7 +115,10 @@ document.addEventListener('DOMContentLoaded', () => {
             request.onload = () => {
                 // Extract JSON data from request
                 const data = JSON.parse(request.responseText);
-
+                
+                // Remove 'unread' icon
+                li.classList.remove('unread');
+                document.querySelector('.fa-commenting-o').remove();
                 // Update the chat div
                 if (data.success) {
                     // Replacing page title
