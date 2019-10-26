@@ -143,8 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Update URL
                     history.pushState({"id": data.channel}, "", "/channels/" + data.channel); 
-
-                  
+                 
                 }
 
                 else {

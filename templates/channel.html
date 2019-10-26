@@ -5,8 +5,8 @@ Chat | {{ channel }}
 {% endblock %}
 
 {% block main %}
-<div class="row flex-xl-nowrap">
-    <div id="all_channels" class="col-12 col-md-3 col-xl-2 bd-sidebar">
+<div class="row flex-nowrap">
+    <div id="all_channels" class="p-2 flex-grow-0 flex-shrink-0 bd-sidebar" style="min-width: 200px">
         <div class="sidebar-head">
             <h4 >All channels</h4>
             <p id="user_name"></p>
@@ -15,7 +15,7 @@ Chat | {{ channel }}
         <ul class="py-3">
             {% for item in channels %}
             <li class="single-channel" data-name="{{ item }}">
-                <a href="/channels/{{ item }}">
+                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
                     # {{ item }}
                 </a>
             </li>
@@ -24,12 +24,14 @@ Chat | {{ channel }}
             {% endfor %}
         </ul>
         <div>
-            <a href="{{ url_for('new_channel') }}">Create a new channel</a>
+            <a href="{{ url_for('new_channel') }}" style="color:rgb(54, 54, 54)">
+                <i class="fa fa-plus-circle"></i> Create a new channel
+            </a>
         </div>
      
     </div>
 
-    <main class="col-12 col-md-9 col-xl-8 pl-md-5 bd-content">
+    <main class="p-2 flex-grow-1 flex-shrink-1 bd-content">
         <div id="chatbox" class=" text-left">
             <div class="col chat-head">
                 <h2 id="channel_title">{{ channel }}</h2>
@@ -58,7 +60,6 @@ Chat | {{ channel }}
                 
                 {% endfor %}
             </div>
-            <hr>
 
             <div id="type_message" class="col chat-foot">
                 <form action="" method="post">
@@ -76,10 +77,6 @@ Chat | {{ channel }}
         </div>
     </main>
 </div>
-
-
-
-
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script src="{{ url_for('static', filename='channel.js') }}"></script>
