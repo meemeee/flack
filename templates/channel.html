@@ -14,6 +14,7 @@ Chat | {{ channel }}
         <hr>
         <ul id="channel_panel" class="col py-3">
             {% for item in channels %}
+                <!-- Display active channel -->
                 {% if item == channel %}
                 <li class="single-channel active" data-name="{{ item }}">
                 {% else %}
@@ -48,8 +49,12 @@ Chat | {{ channel }}
                     {% if message.content != "Message has been deleted." %} 
                         <p id="{{ message.mess_id }}" class="single-message">
                             <b>{{ message.user }}:</b> {{ message.content }}   
-                            <span id="timestamp">{{ message.timestamp }}</span>            
-                            <a class="trashbin" value="{{ message.mess_id }}" href="#"><i class="fa fa-trash-o"></i></a>   
+                            <span class="optional">
+                                {{ message.timestamp }}
+                                <a class="trashbin" value="{{ message.mess_id }}" href="#">
+                                    <i class="fa fa-trash-o"></i>
+                                </a>
+                            </span>   
                         </p>
                     {% else %}
                         <p id="{{ message.mess_id }}" class="single-message">

@@ -72,15 +72,24 @@ ul {
     background-color: rgb(248, 248, 248);
 }
 
+.optional {
+    visibility: hidden;
+    color: rgb(168, 167, 167);
+    margin-left: 20px;
+    /* margin-bottom: 0; */
+    font-size: 0.95rem;
+}
+
 .fa-trash-o {
-    color: rgb(153, 152, 152);
+    color: rgb(168, 167, 167);
     margin-left: 8px;
-    margin-bottom: 0;
-    font-size: 1em;
+}
+.single-message:hover > .optional {
+    visibility: visible;
 }
 
 .fa-trash-o:hover {
-    color: rgb(78, 78, 78);
+    color: rgb(58, 57, 57);
 }
 
 p {
@@ -94,9 +103,4 @@ p {
 .deleted {
     color: rgb(180, 178, 178);
     font-style: italic;
-}
-#timestamp {
-    color: rgb(145, 145, 145);
-    margin-left: 20px;
-    font-size: 95%;
 }

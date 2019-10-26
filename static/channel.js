@@ -65,9 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelector('#allmessages').innerHTML = "";
 
             const mess = document.createElement('p');
-            mess.innerHTML = `<b>${data.user}:</b> ${data.content} <span id="timestamp">${data.timestamp}</span>`;
+            mess.innerHTML = `<b>${data.user}:</b> ${data.content}`;
             mess.setAttribute('class', 'single-message');
             mess.id = data.mess_id;
+
+            const optional = document.createElement('span');
+            optional.setAttribute('class', 'optional');
+            optional.innerHTML = `${data.timestamp}`;
             const trashbin = document.createElement('a');
             trashbin.setAttribute('class', 'trashbin');
             trashbin.setAttribute('value', `${data.mess_id}`);
@@ -75,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const icon = document.createElement('i');
             icon.setAttribute('class', 'fa fa-trash-o');
             trashbin.append(icon);
-            mess.append(trashbin);
+            optional.append(trashbin);
+            
+            mess.append(optional);
             allmess.append(mess);
             deletemess();
             
@@ -116,9 +122,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Extract JSON data from request
                 const data = JSON.parse(request.responseText);
                 
-                // Remove 'unread' icon
-                li.classList.remove('unread');
-                document.querySelector('.fa-commenting-o').remove();
+                // Remove 'unread' icon if any
+                if (li.classList.contains('unread')) {
+                    li.classList.remove('unread');
+                    document.querySelector('.fa-commenting-o').remove();
+                }
+                    
                 // Update the chat div
                 if (data.success) {
                     // Replacing page title
@@ -145,13 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         for (i = 0; i < data.messages.length; i++) {
                             // Do not display trashbin if message has been deleted
                             if (data.messages[i]["content"].localeCompare("Message has been deleted.") != 0) {
-                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                                + data.messages[i]["user"] + "</b>: " 
-                                + data.messages[i]["content"] + " <span id=\"timestamp\">" 
-                                + data.messages[i]["timestamp"] + "</span>"
-                                +"<a" + " class=\"trashbin\"" 
+                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
+                                + "<b>" + data.messages[i]["user"] + "</b>: " 
+                                + data.messages[i]["content"] 
+                                + "<span class=\"optional\">" + data.messages[i]["timestamp"]
+                                + "<a class=\"trashbin\"" 
                                 + "value=" + data.messages[i]["mess_id"] 
-                                + " href=\"#\"><i class=\"fa fa-trash-o\"></i></a></p>";
+                                + " href=\"#\"><i class=\"fa fa-trash-o\"></i>"
+                                + "</a></span></p>";
                             }
                             else {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
