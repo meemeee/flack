@@ -55,6 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
+        // if this is the 1st message, clear newchannel_content first
+        if (!document.querySelector('.single-message'))
+            document.querySelector('#allmessages').innerHTML = "";
+
         const mess = document.createElement('p');
         mess.innerHTML = `<b>${data.user}:</b> ${data.content} ---- <i>${data.timestamp}</i>`;
         mess.setAttribute('class', 'single-message');
@@ -99,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Replacing page title
                     document.title = "Chat | " + data.channel;
 
-                    // Replacing "active" class in channel name
+                    // Toggle "active" class in channel name
                     if (document.querySelector('.active'))
                         document.querySelector('.active').classList.remove("active");
                     
@@ -112,10 +116,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (data.messages.length === 0) {
                         var newchannel_content = `<i>This is the beginning of <b>${data.channel}</b> channel.</i>`;
                         document.querySelector('#allmessages').innerHTML = newchannel_content;
-                        // Remove when there is 1st message
-                        document.querySelector('#send').onclick = () => {
-                            document.querySelector('#allmessages').innerHTML = "";
-                        };
                     }
                     else {
                         // Loop through messages
