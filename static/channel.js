@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Remove 'unread' icon if any
                 if (li.classList.contains('unread')) {
                     li.classList.remove('unread');
-                    document.querySelector('.fa-commenting-o').remove();
+                    li.querySelector('.fa-commenting-o').remove();
                 }
                     
                 // Update the chat div
