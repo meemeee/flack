@@ -119,4 +119,6 @@ def delete(data):
 
 
 if __name__ == '__main__':
-    socketio.run(host="0.0.0.0", port=8000)
+    socketio.run(app)
+    app.run(host="0.0.0.0", port=8000)
+    
