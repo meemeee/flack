@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Display user name
-    document.querySelector('#user_name').innerHTML = localStorage.getItem('name');
+    // Get user name
+    const user = document.querySelector('#user_name').innerHTML;
 
     // Scroll to to bottom to see latest messages
     var allmess = document.querySelector('#allmessages');    
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     document.querySelector('#allmessages').innerHTML = "";
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
-                const user = localStorage.getItem('name');
+                // const user = localStorage.getItem('name');
+                // const user = {{ user }};
                 const timestamp = new Date().getHours() + ":" + new Date().getMinutes();
                 
                 socket.emit('send message', {"channel": channel, "mess_id": id, "user": user, "content": message, "timestamp": timestamp});
@@ -46,7 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 var result = confirm("Do you want to remove this message?");
                 if (result) {
                     const id = a.getAttribute('value');
-                    const user = localStorage.getItem('name');
+                    // const user = localStorage.getItem('name');
+                    // const user = {{ user }};
                     const channel_name = document.querySelector('#channel_title').innerHTML;
 
                     socket.emit('delete message', {"channel": channel_name, "mess_id": id, "user": user});
@@ -58,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
         // Only update message if the same channel is open
-        if (window.location.pathname === "/channels/" + `${data.channel}`) {
+        if (window.location.pathname.indexOf("/channels/" + `${data.channel}`) > -1) {
             // if this is the 1st message, clear newchannel_content first
             if (!document.querySelector('.single-message'))
                 document.querySelector('#allmessages').innerHTML = "";
@@ -72,15 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const optional = document.createElement('span');
             optional.setAttribute('class', 'optional');
             optional.innerHTML = `${data.timestamp}`;
-            const trashbin = document.createElement('a');
-            trashbin.setAttribute('class', 'trashbin');
-            trashbin.setAttribute('value', `${data.mess_id}`);
-            trashbin.setAttribute('href', '#');
-            const icon = document.createElement('i');
-            icon.setAttribute('class', 'fa fa-trash-o');
-            trashbin.append(icon);
-            optional.append(trashbin);
-            
+            // var user = localStorage.getItem('name');
+            if (data.user === user) {
+                const trashbin = document.createElement('a');
+                trashbin.setAttribute('class', 'trashbin');
+                trashbin.setAttribute('value', `${data.mess_id}`);
+                trashbin.setAttribute('href', '#');
+                const icon = document.createElement('i');
+                icon.setAttribute('class', 'fa fa-trash-o');
+                trashbin.append(icon);
+                optional.append(trashbin);
+            }
+     
             mess.append(optional);
             allmess.append(mess);
             
@@ -118,6 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Initialize new request
             const request = new XMLHttpRequest();
             const channel = li.dataset.name;
+            // var user_name= localStorage.getItem('name');
             request.open('POST', '/ajax_channel');
 
             // Callback function for when request completes
@@ -155,7 +161,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         var i;
                         for (i = 0; i < data.messages.length; i++) {
                             // Do not display trashbin if message has been deleted
-                            if (data.messages[i]["content"].localeCompare("Message has been deleted.") != 0) {
+                            // Only display trashbin for messages from this user
+                            if (data.messages[i]["content"].localeCompare("Message has been deleted." ) == 0) {
+                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
+                                + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
+                                + data.messages[i]["content"] +"</span>"
+                            }
+                            else if (data.messages[i]["user"] === user) {
                                 text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
                                 + "<b>" + data.messages[i]["user"] + ":</b> " 
                                 + data.messages[i]["content"] 
@@ -166,9 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 + "</a></span></p>";
                             }
                             else {
-                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                                + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
-                                + data.messages[i]["content"] +"</span>"
+                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
+                                + "<b>" + data.messages[i]["user"] + ":</b> " 
+                                + data.messages[i]["content"] 
+                                + "<span class=\"optional\">" + data.messages[i]["timestamp"]
+                                + "</span></p>";
                             }
                         }                       
                         document.querySelector('#allmessages').innerHTML = text;

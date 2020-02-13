@@ -8,8 +8,8 @@ Chat | {{ channel }}
 <div class="row flex-nowrap">
     <div id="all_channels" class="p-2 flex-grow-0 flex-shrink-0 bd-sidebar" style="min-width: 200px">
         <div class="col sidebar-head">
-            <h4 >All channels</h4>
-            <p id="user_name"></p>
+            <h4>All channels</h4>
+            <p id="user_name">{{ user }}</p>
         </div>
         <hr>
         <ul id="channel_panel" class="col py-3">
@@ -51,9 +51,11 @@ Chat | {{ channel }}
                             <b>{{ message.user }}:</b> {{ message.content }}   
                             <span class="optional">
                                 {{ message.timestamp }}
+                                {% if message.user == user %}
                                 <a class="trashbin" value="{{ message.mess_id }}" href="#">
                                     <i class="fa fa-trash-o"></i>
                                 </a>
+                                {% endif %}
                             </span>   
                         </p>
                     {% else %}

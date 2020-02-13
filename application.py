@@ -1,26 +1,61 @@
 import os
 
-from flask import Flask, request, render_template, redirect, jsonify
+from flask import Flask, request, render_template, redirect, jsonify, session
+from flask_session import Session
 from flask_socketio import SocketIO, emit
+from functools import wraps
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
+# Configure session to use filesystem
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+
+Session(app)
+
 # Set global variable: a dict of channels
 channel_list = {}
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+# Helper
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("username") is None:
+            render_template("index.html")
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@app.route("/", methods=["GET", "POST"])
+def login():
+    # Forget any user_id
+    # session.clear()
+
+    # User reached via POST by submitting the form
+    if request.method == "POST":
+        # Remember which user has logged in
+        session["username"] = request.form.get("name")
+        
+        # Redirect to book page
+        return redirect("/channels")
+    # User reached via GET by clicking a link or redirect
+    else:
+        if session.get("username") is None:
+            return render_template("index.html")
+        else: 
+            return render_template("index.html", user=session.get("username"))
 
 @app.route("/channels", methods=["GET", "POST"])
+@login_required
 def channels():
     """ Display all channels """
 
-    return render_template("channels.html", channels=channel_list)
+    return render_template("channels.html", channels=channel_list, user=session.get("username"))
 
 @app.route("/ajax_channel", methods=["POST"])
+@login_required
 def change_channel():
 
     """ View a channel when in channel list page """
@@ -31,11 +66,12 @@ def change_channel():
         return jsonify({"success": False})
         
     messages = channel_list[channel]
-    print(messages)
-    return jsonify({"success": True, "messages":messages, "channel":channel})
+
+    return jsonify({"success": True, "messages":messages, "channel":channel, "user":session.get("username")})
 
 
 @app.route("/channels/<string:channel>")
+@login_required
 def channel(channel):
  
     """ View a channel by modifying the url """
@@ -45,16 +81,17 @@ def channel(channel):
         
     messages = channel_list[channel]
 
-    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list)
+    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list, user=session.get("username"))
 
 
 @app.route("/new_channel", methods=["POST", "GET"])
+@login_required
 def new_channel():
 
     """ Create a new channel """
     # User reached via redirect or clicking a link
     if request.method == "GET":
-        return render_template("create.html")
+        return render_template("create.html", user=session.get("username"))
     
     # User reached via submitting form
     else:
@@ -74,6 +111,7 @@ def new_channel():
 
 
 @socketio.on('send message')
+@login_required
 def new_mess(data):
     mess_id = data["mess_id"]
     user = data["user"]
@@ -92,6 +130,7 @@ def new_mess(data):
     emit('add new message', {"channel": channel_name, "mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 @socketio.on('delete message')
+@login_required
 def delete(data):
     mess_id = data["mess_id"]
     channel_name = data["channel"]
@@ -105,7 +144,7 @@ def delete(data):
             timestamp = []
             message["content"] = content
             message["timestamp"] = timestamp
-            print("deleted")
+           
             break
     # Broadcast new message
     emit('deletion complete', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
