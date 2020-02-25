@@ -1,56 +1,106 @@
-{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
 
-{% block tittle %}
-Welcome!
-{% endblock %}
+<head>
+    <title>Flack</title>
 
-{% block main %}
-<div class="container-fluid col-4 col-md-4 col-xl-4 py-md-5 py-sm-5">
-    <div class="py-5 text-center" style="min-width: 400px">
-        {% if not user %}
-        <h2 class="pb-4">Welcome!</h2>
-        <form action="{{ url_for('login') }}" method="post">
-            <div class="form-group d-flex bd-highlight">
-                <div class="p-2 flex-grow-1 bd-highlight">
-                    <input id="name" autofocus autocomplete="off" class="form-control" name="name" 
-                    placeholder="Input your name here" type="text">
-                </div>
-                <div class="p-2 bd-highlight">
-                    <button id="start" class="btn btn-primary" type="submit">Start</button>
-                </div>       
-            </div>
-        </form>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        {% else %}
-        <h2 class="pb-4">Welcome back, {{ user }}!</h2>
-        <a href="{{ url_for('channels') }}">
-            <button class="btn btn-primary">Start</button>
-        </a>
- 
-        {% endif %}
-    </div>
-</div>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-<script>
-    // Redirect to last channel if this is not the first visit
-    // if (localStorage.getItem('last_channel')) {
-    //     window.location.replace(localStorage.getItem('last_channel'));
-    //     // Clear previous lastChannel value
-    //     localStorage.removeItem('last_channel');
-    // }
+    <!-- JS for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- FullPage -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.8/fullpage.min.js"></script>
 
-    // By default, Start button is disabled
-    const start = document.querySelector('#start');
-    start.disabled = true;
+
+    <!-- Stylesheet -->
+    <!-- FullPage -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.8/fullpage.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
     
-    // Enable Start button only if there is text in the input field
-    const name = document.querySelector('#name');
-    document.querySelector('#name').onkeyup = () => {
-        if (name.value.length > 0)
-            start.disabled = false;                       
-        else
-            start.disabled = true;
-    };
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
-</script>
-{% endblock %}
+
+</head>
+
+<body>
+    <div id="fullpage" class="fullpage-wrapper">
+        <div class="section">
+            <div class="row align-items-start px-5 mx-5">
+                <div class="col-lg-5">
+                    <div class="index mb-4">
+                        <h2>Sicilian</h2>
+                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                            Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                        </p>
+                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                    </div>
+                </div>
+                <div class="col-lg-7 ml-auto">
+                    <img src="../static/media/1.jpg" alt="Sicilian pizza" class="img-fluid img-menu">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="row align-items-start px-5 mx-5">
+                <div class="col-lg-5 animated fadeInUp">
+                    <div class="index mb-4">
+                        <h2>HEADING 2</h2>
+                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                            Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                        </p>
+                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                    </div>
+                </div>
+                <div class="col-lg-7 ml-auto animated fadeInUp">
+                    <img src="../static/media/2.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="row align-items-start px-5 mx-5">
+                <div class="col-lg-5">
+                    <div class="index mb-4">
+                        <h2>HEADING 3</h2>
+                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                            Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                        </p>
+                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                    </div>
+                </div>
+                <div class="col-lg-7 ml-auto">
+                    <img src="../static/media/3.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <script>
+        $(document).ready(function () {
+            $('#fullpage').fullpage({
+                })
+        });
+
+        
+    </script>
+
+</body>
+
+</html>
