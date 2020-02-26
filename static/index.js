@@ -14,7 +14,7 @@ $(document).ready(function () {
 
         node.addEventListener('animationend', handleAnimationEnd)
     }
-    // animateCSS('.zero .is-animated', 'bounce');
+
     // Initialize Fullpage
     $('#fullpage').fullpage({
         navigation: true,
@@ -52,11 +52,6 @@ $(document).ready(function () {
 
     })
 
-    // new fullpage('#fullpage', {
-    //     anchors: ['page1', 'page2', 'page3', 'page4'],
-    //     sectionsColor: ['yellow', 'orange', '#C0C0C0', '#ADD8E6'],
-    // });
-
     //adding the action to the button
     $(document).on('click', '#btn', function () {
         fullpage_api.moveSlideRight();
@@ -70,5 +65,18 @@ $(document).ready(function () {
     $(document).on('click', '#btn4', function () {
         fullpage_api.moveSlideLeft();
     });
+
+    // By default, Start button is disabled
+    const start = document.querySelector('#start');
+    start.disabled = true;
+    
+    // Enable Start button only if there is text in the input field
+    const name = document.querySelector('#name');
+    document.querySelector('#name').onkeyup = () => {
+        if (name.value.length > 0)
+            start.disabled = false;                       
+        else
+            start.disabled = true;
+    };
 
 });

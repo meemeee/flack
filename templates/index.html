@@ -45,6 +45,28 @@
 </head>
 
 <body>
+    {% if user %}
+    <div class="container">
+        <div class="row align-items-center p-5 my-5">
+            <div class="col-lg-6 text-center">
+                <div class="mb-4 animated fadeInDown delay-1s">
+                    <h2>Welcome back, {{ user }}!</h2>
+                    <h4 class="my-5 animated bounce delay-3s">Shall we?</h4>
+                        
+                    <a href="{{ url_for('channels') }}">
+                        <button href="/channels" class="btn btn-primary btn-lg rounded-pill" type="submit">Let's go</button>
+                    </a>       
+                        
+                </div>
+            </div>
+    
+            <div class="col-lg-6 ml-auto">
+                <img src="../static/media/9.jpg" alt="" class="img-fluid animated fadeInDown delay-1s">
+            </div>
+        </div>
+    </div>
+
+    {% else %}
     <div id="fullpage" class="fullpage-wrapper">
         <div class="section zero">
             <div class="row align-items-end px-5 mx-5">
@@ -59,7 +81,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 ml-auto animated fadeIn delay-1s">
-                    <img src="../static/media/1.jpg" alt="Sicilian pizza" class="img-fluid">
+                    <img src="../static/media/1.jpg" alt="" class="img-fluid">
                 </div>
             </div>
         </div>
@@ -76,7 +98,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 ml-auto">
-                    <img src="../static/media/2.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                    <img src="../static/media/2.jpg" alt="" class="img-fluid  ">
                 </div>
             </div>
         </div>
@@ -93,7 +115,7 @@
                     </div>
                 </div>
                 <div class="col-lg-8 ml-auto">
-                    <img src="../static/media/4.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                    <img src="../static/media/4.jpg" alt="" class="img-fluid  ">
                 </div>
             </div>
         </div>
@@ -111,7 +133,7 @@
                         </div>
                     </div>
                     <div class="col-lg-8 ml-auto">
-                        <img src="../static/media/3.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                        <img src="../static/media/3.jpg" alt="" class="img-fluid  ">
                     </div>
                 </div>
             </div>
@@ -134,13 +156,14 @@
                     </div>
                 
                     <div class="col-lg-5">
-                        <img src="../static/media/8.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                        <img src="../static/media/8.jpg" alt="" class="img-fluid  ">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
+    {% endif %}
     <script src="{{ url_for('static', filename='index.js') }}"></script>
 
 
