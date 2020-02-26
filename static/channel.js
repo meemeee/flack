@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get user name
     const user = document.querySelector('#user_name').innerHTML;
 
+    
+    // Sidebar toggle behavior
+    $('#sidebarCollapse').on('click', function () {
+        $('#sidebar, #content').toggleClass('active');
+    });
+
+
     // Scroll to to bottom to see latest messages
     var allmess = document.querySelector('#allmessages');    
     allmess.scrollTop = allmess.scrollHeight;

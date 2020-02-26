@@ -6,16 +6,20 @@ All Channels
 
 {% block main %}
 <div class="row flex-nowrap">
-    <div id="all_channels" class="p-2 flex-grow-0 flex-shrink-0 bd-sidebar" style="min-width: 200px">
-        <div class="col sidebar-head">
-            <h4>All channels</h4>
-            <p id="user_name">{{ user }}</p>
+    <div class="vertical-nav bg-white px-3 py-2" id="sidebar">
+        <p class="text-gray font-weight-bold px-3 mb-2">CHATS</p>
+        <div class="px-3">
+            <div class="chat-head">
+                <h4 class="m-0" id="user_name">{{ user }}</h4>
+                <p class="text-success">Online</p>
+            </div>
         </div>
         <hr>
-        <ul class="col py-3">
+
+        <ul class="nav flex-column bg-white mb-0">
             {% for item in channels %}
             <li class="single-channel" data-name="{{ item }}">
-                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
+                <a class="px-3" href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
                     # {{ item }}
                 </a>
             </li>
@@ -23,43 +27,45 @@ All Channels
                 <i>There's no channel yet.</i>
             {% endfor %}
         </ul>
-        <div>
+        <div class="my-5 px-3">
             <a href="{{ url_for('new_channel') }}" style="color:rgb(54, 54, 54)">
-                <i class="fa fa-plus-circle"></i> Create a new channel
+                <i class="fa fa-plus-circle"></i> New channel
             </a>
         </div>
-        
     </div>
 
-    <main class="p-2 flex-grow-1 flex-shrink-1 bd-content">
-        <div id="chatbox" class=" text-left">
-            <div class="col chat-head"> 
-                <h2 id="channel_title">Welcome</h2>
+
+    <main class="page-content p-2" id="content">
+        <!-- Toggle button -->
+        <button id="sidebarCollapse" type="button" class="btn btn-white rounded-pill p-0 mb-2">
+            <i class="text-gray fa fa-chevron-left" style="font-size: 1.4rem;"></i>
+        </button>
+
+        <div id="chatbox">
+            
+            <div class="col chat-head">
+                <h4 id="channel_title">Welcome</h4>
             </div>
             <hr>
             <div id="allmessages" class="col chat-body py-3">
                 Select a channel to join.
             </div>
-
-
-            <div id="type_message" class="col chat-foot" style="display: none">
+            <div id="type_message" class="chat-foot" style="display: none">
                 <form action="" method="post">
-                    <div class="form-group d-flex bd-highlight">
-                        <div class="p-2 flex-grow-1 bd-highlight">
-                            <input autofocus autocomplete="off" class="form-control" id="message" name="message" 
-                                placeholder="Type your message here" type="text">
-                        </div>
-                        <div class="p-2 bd-highlight">
-                            <button id="send" class="btn btn-primary" type="submit">Send</button>   
+                    <div class="form-group">
+                        <textarea id="message" name="message" class="form-control message"
+                            placeholder="Write a message"></textarea>
+                        <div class="py-2">
+                            <button id="send" class="btn btn-primary float-right send-message" type="submit"
+                                >Send</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </main>
-</div>
-    
-    
+</div> 
+
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
 <script src="{{ url_for('static', filename='channel.js') }}"></script>
 {% endblock %}
