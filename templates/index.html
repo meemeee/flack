@@ -24,6 +24,9 @@
         crossorigin="anonymous"></script>
     <!-- FullPage -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.8/fullpage.min.js"></script>
+    <!-- This following line is only necessary in the case of using the option `scrollOverflow:true` -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/3.0.8/vendors/scrolloverflow.min.js"></script>
+
 
 
     <!-- Stylesheet -->
@@ -32,74 +35,140 @@
     <link rel="stylesheet" href="/static/style.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="shortcut icon" href="#">
-    
+
     <!-- Animate.css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Merriweather|Open+Sans&display=swap" rel="stylesheet">
 
 </head>
 
 <body>
     <div id="fullpage" class="fullpage-wrapper">
-        <div class="section">
-            <div class="row align-items-start px-5 mx-5">
-                <div class="col-lg-5">
-                    <div class="index mb-4">
-                        <h2>Sicilian</h2>
-                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+        <div class="section zero">
+            <div class="row align-items-end px-5 mx-5">
+                <div class="col-lg-4 is-animated animated fadeIn delay-1s">
+                    <div class="mb-4">
+                        <h2>Let's get Flacking</h2>
+                        <hr>
+                        <p class="mt-4 pb-3">Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                             Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                         </p>
-                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                        
                     </div>
                 </div>
-                <div class="col-lg-7 ml-auto">
+                <div class="col-lg-8 ml-auto">
                     <img src="../static/media/1.jpg" alt="Sicilian pizza" class="img-fluid img-menu">
                 </div>
             </div>
         </div>
-        <div class="section">
-            <div class="row align-items-start px-5 mx-5">
-                <div class="col-lg-5 animated fadeInUp">
-                    <div class="index mb-4">
-                        <h2>HEADING 2</h2>
-                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+        <div class="section first">
+            <div class="row align-items-end px-5 mx-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 is-animated">
+                        <h2>No registration needed</h2>
+                        <hr>
+                        <p class="mt-4 pb-3">Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                             Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                         </p>
-                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                       
                     </div>
                 </div>
-                <div class="col-lg-7 ml-auto animated fadeInUp">
+                <div class="col-lg-8 ml-auto">
                     <img src="../static/media/2.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
                 </div>
             </div>
         </div>
-        <div class="section">
-            <div class="row align-items-start px-5 mx-5">
-                <div class="col-lg-5">
-                    <div class="index mb-4">
-                        <h2>HEADING 3</h2>
-                        <p>Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+        <div class="section second">
+            <div class="row align-items-end px-5 mx-5">
+                <div class="col-lg-4">
+                    <div class="mb-4 is-animated">
+                        <h2>It's simple. It's free.</h2>
+                        <hr>
+                        <p class="mt-4 pb-3">Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                             Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
                         </p>
-                        <button href="#" class="btn btn-primary my-3">Get Started</button>
+                 
                     </div>
                 </div>
-                <div class="col-lg-7 ml-auto">
-                    <img src="../static/media/3.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                <div class="col-lg-8 ml-auto">
+                    <img src="../static/media/4.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                </div>
+            </div>
+        </div>
+        <div class="section third">
+            <div class="slide" data-anchor="firstSlide">
+                <div class="row align-items-end px-5 mx-5">
+                    <div class="col-lg-4">
+                        <div class="mb-4 is-animated">
+                            <h2>Join chats all over the world</h2>
+                            <hr>
+                            <p class="mt-4">Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                                Sicilian-style dough tossed in our house-made bolognese sauce with pecorino & pancetta.
+                            </p>
+                            <button id="btn" href="" class="btn btn-primary rounded-pill mt-3">Get Started</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 ml-auto">
+                        <img src="../static/media/3.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                    </div>
+                </div>
+            </div>
+            <div class="slide" data-anchor="secondSlide">
+                <div class="row justify-content-center px-5 mx-5">
+                    <div class="col-lg-8">
+                        <h2>Before we go...</h2>
+                        <h3>Please tell us your name</h3>
+                        <form action="{{ url_for('login') }}" method="post">
+                            <div class="form-group d-flex bd-highlight">
+                                <div class="py-4 flex-grow-1 bd-highlight">
+                                    <input id="name" autofocus autocomplete="off" class="form-control rounded-pill" name="name" 
+                                    placeholder="What should we call you?" type="text">
+                                </div>
+                                <div class="px-2 py-4 bd-highlight">
+                                    <button id="start" class="btn btn-primary rounded-pill" type="submit">Start</button>
+                                </div>       
+                            </div>
+                        </form>
+                    </div>
+                
+                    <div class="col-lg-5">
+                        <img src="../static/media/8.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                    </div>
+                </div>
+            </div>
+            <div class="slide" data-anchor="secondSlide">
+                <div class="row align-items-start px-5 mx-5">
+                    <div class="col-lg-6">
+                        <div class="mb-4 is-animated">
+                            <h2>Before we go...</h2>
+                            <h3>Please tell us your name</h3>
+                            <form action="{{ url_for('login') }}" method="post">
+                                <div class="form-group bd-highlight">
+                                    <div class="py-4 flex-grow-1 bd-highlight">
+                                        <input id="name" autofocus autocomplete="off" class="form-control rounded-pill" name="name" 
+                                        placeholder="Mermaid?" type="text">
+                                    </div>
+                                    <div class="bd-highlight">
+                                        <button id="start" class="btn btn-primary rounded-pill" type="submit">Start</button>
+                                    </div>       
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            
+                    <div class="col-lg-5 ml-auto">
+                        <img src="../static/media/9.jpg" alt="Sicilian pizza" class="img-fluid img-menu ">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
-    <script>
-        $(document).ready(function () {
-            $('#fullpage').fullpage({
-                })
-        });
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
 
-        
-    </script>
+
 
 </body>
 

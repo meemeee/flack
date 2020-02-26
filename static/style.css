@@ -1,20 +1,32 @@
-
-
 img {
     max-width: 600px;
 }
 
-.index-heading h2::after {
-    width: 80px;
-    height: 2px;
-    background: #ff7404;
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 50%;
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    transform: translateX(-50%);
+h1, h2, h3, h4 {
+	font-family: 'Merriweather';
+}
+
+h2 {
+	font-weight: 900;
+	font-size: 50px;
+}
+
+p {
+	font-family: 'Open Sans';
+	color: rgb(139, 139, 139);
+	font-size: 12px;
+}
+
+hr {
+    width: 140px;
+    height: 1px;
+	background: #ff7404;
+	margin-left: 0%;
+  
+}
+
+.btn {
+	font-size: 18px;
 }
 
 .fullpage-wrapper {
@@ -30,11 +42,19 @@ img {
 	visibility: hidden;
 	opacity: 0;
 	z-index: 0;
-	transition: all .7s ease-in-out;
+	/* transition: all 0.7s ease-in-out; */
 }
 
 .fp-section.active {
 	visibility: visible;
 	opacity: 1;
 	z-index: 1;
+}
+
+.fp-controlArrow.fp-prev, .fp-controlArrow.fp-next {
+	border-color: lightpink;
+}
+
+.form-control {
+	font-size: 18px; 
 }
