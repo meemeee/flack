@@ -16,15 +16,15 @@
         </div>
         <hr>
 
-        <ul class="nav flex-column bg-white mb-0">
+        <ul class="nav flex-column bg-white mb-0 px-3">
             {% for item in channels %}
             <li class="single-channel" data-name="{{ item }}">
-                <a class="px-3" href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
+                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
                     # {{ item }}
                 </a>
             </li>
             {% else %}
-                <i>There's no channel yet.</i>
+                <p>There's no channel yet.</p>
             {% endfor %}
         </ul>
         <div class="my-5 px-3">
@@ -41,7 +41,7 @@
             <i class="text-gray fa fa-chevron-left" style="font-size: 1.4rem;"></i>
         </button>
 
-        <div id="chatbox" class=""> 
+        <div id="chatbox" class="d-flex flex-column"> 
             <div class="chat-head">
                 <h4 id="channel_title" class="m-0">{{ channel }}</h4>
                 <p>Some description goes here. Some description goes here</p>
@@ -49,59 +49,56 @@
             <hr>
             <div id="allmessages" class="chat-body py-3">
                 {% for message in messages %}
-                <div class="row justify-content-center" 
-                    data-id="{{ message.mess_id }}">
                     {% if message.user == user %}
-                    <p class="ml-auto mr-3">
+                    <div class="row my-2">
                         <!-- For non-deleted message, display timestamp and trashbin -->
-                        {% if message.content != "Message has been deleted." %} 
-                        <span id="{{ message.mess_id }}" class="username single-message">
-                            <span class="optional timestamp"
-                            data-livestamp="{{ message.timestamp }}">
-                                {{ message.timestamp }}
-                                {% if message.user == user %}
+                        <div class="col-md-8 ml-auto">
+                            {% if message.content != "Message has been deleted." %} 
+                            <span id="{{ message.mess_id }}" 
+                                class="d-flex justify-content-end outgoing-message">
+                                <span class="optional d-flex align-items-center"
+                                data-livestamp="{{ message.timestamp }}">
                                     <a class="trashbin" value="{{ message.mess_id }}" href="#">
-                                        <i class="fa fa-trash-o"></i>
+                                        <i class="mr-2 fa fa-trash-o"></i>
                                     </a>
-                                {% endif %}
+                                    {{ message.timestamp }}
+                                </span>
+                                <p class="">{{ message.content }}</p>
                             </span>
-                            <b>{{ message.user }}:</b> {{ message.content }}
-                        </span>
-                        {% else %}
-                        <span id="{{ message.mess_id }}" class="username single-message">
-                            <b>{{ message.user }}:</b> 
-                            <span class="deleted">{{ message.content }}</span>
-                        </span>
-                        {% endif %}
-
-                    </p>
+                            {% else %}
+                            <span id="{{ message.mess_id }}" class="outgoing-message">
+                                <p class="deleted">{{ message.content }}</p>
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
                     {% else %}
-                    <p class="ml-3 mr-auto">
+                    <div class="row my-2">
                         <!-- For non-deleted message, display timestamp and trashbin -->
-                        {% if message.content != "Message has been deleted." %} 
-                        <span id="{{ message.mess_id }}" class="username single-message">
-                            <b>{{ message.user }}:</b> {{ message.content }}
-                            <span class="optional timestamp"
-                            data-livestamp="{{ message.timestamp }}">
-                                {{ message.timestamp }}
-                                {% if message.user == user %}
+                        <div class="col-md-8 mr-auto">
+                            {% if message.content != "Message has been deleted." %} 
+                            <span id="{{ message.mess_id }}" 
+                                class="d-flex justify-content-start incoming-message">
+                                <p class="">{{ message.content }}</p>
+                                <span class="optional d-flex align-items-center"
+                                data-livestamp="{{ message.timestamp }}">
                                     <a class="trashbin" value="{{ message.mess_id }}" href="#">
-                                        <i class="fa fa-trash-o"></i>
+                                        <i class="mr-2 fa fa-trash-o"></i>
                                     </a>
-                                {% endif %}
+                                    {{ message.timestamp }}
+                                </span>
+                                
                             </span>
-                        </span>
-                        {% else %}
-                        <span id="{{ message.mess_id }}" class="username single-message">
-                            <b>{{ message.user }}:</b> 
-                            <span class="deleted">{{ message.content }}</span>
-                        </span>
-                        {% endif %}
-
-                    </p>
+                            {% else %}
+                            <span id="{{ message.mess_id }}" class="incoming-message">
+                                <p class="deleted">{{ message.content }}</p>
+                            </span>
+                            {% endif %}
+                        </div>
+                    </div>
                     {% endif %}
                     
-                </div>
+                
 
                 <!-- Display welcome mess if this is a new channel -->
                 {% else %}
@@ -111,14 +108,18 @@
                 {% endfor %}
             </div>
 
-            <div id="type_message" class="chat-foot">
+            <div id="type_message" class="chat-foot mt-auto mb-3">
                 <form action="" method="post">
-                    <div class="form-group">
-                        <textarea id="message" name="message" class="form-control message"
-                            placeholder="Write a message"></textarea>
-                        <div class="py-2">
-                            <button id="send" class="btn btn-primary float-right send-message" type="submit"
-                                >Send</button>
+                    <div class="form-group d-flex">
+                        <!-- <textarea id="message" name="message" class="form-control message"
+                            placeholder="Write a message"></textarea> -->
+                        <input autocomplete="off" class="form-control rounded-pill shadow-none" 
+                            id="message" name="message" 
+                            placeholder="Write a message" type="text">
+                        <div class="">
+                            <button id="send" class="btn btn-white rounded-pill send-message shadow-none" type="submit">
+                                <i class="fa fa-paper-plane" style="font-size: 1.4rem; color: lightpink;"></i>
+                            </button>
                         </div>
                     </div>
                 </form>

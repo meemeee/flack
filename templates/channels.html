@@ -19,12 +19,12 @@ All Channels
         <ul class="nav flex-column bg-white mb-0">
             {% for item in channels %}
             <li class="single-channel" data-name="{{ item }}">
-                <a class="px-3" href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
+                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
                     # {{ item }}
                 </a>
             </li>
             {% else %}
-                <i>There's no channel yet.</i>
+                <p>There's no channel yet.</p>
             {% endfor %}
         </ul>
         <div class="my-5 px-3">
