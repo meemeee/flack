@@ -1,8 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Get user name
-    const user = document.querySelector('#user_name').innerHTML;
+// Template for new websocket message
+const template = Handlebars.compile(document.querySelector('#ws_new_message').innerHTML);
 
-    
+// Get user name
+const user = document.querySelector('#user_name').innerHTML;
+
+// Handlebars helper
+Handlebars.registerHelper('if_eq', function(a, opts) {
+    if (a === user) {
+        return opts.fn(this);
+    } else {
+        return opts.inverse(this);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {  
     // Sidebar toggle behavior
     $('#sidebarCollapse').on('click', function () {
         $('#sidebar, #content').toggleClass('active');
@@ -69,33 +80,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // Only update message if the same channel is open
         if (window.location.pathname.indexOf("/channels/" + `${data.channel}`) > -1) {
             // if this is the 1st message, clear newchannel_content first
-            if (!document.querySelector('.single-message'))
+            if (!document.querySelector('.outgoing-message') || 
+                !document.querySelector('.incoming-message'))
                 document.querySelector('#allmessages').innerHTML = "";
-
-            // Create required elements in a message
-            const mess = document.createElement('p');
-            mess.innerHTML = `<b>${data.user}:</b> ${data.content}`;
-            mess.setAttribute('class', 'single-message');
-            mess.id = data.mess_id;
-
-            const optional = document.createElement('span');
-            optional.setAttribute('class', 'optional');
-            optional.innerHTML = `${data.timestamp}`;
-            // var user = localStorage.getItem('name');
-            if (data.user === user) {
-                const trashbin = document.createElement('a');
-                trashbin.setAttribute('class', 'trashbin');
-                trashbin.setAttribute('value', `${data.mess_id}`);
-                trashbin.setAttribute('href', '#');
-                const icon = document.createElement('i');
-                icon.setAttribute('class', 'fa fa-trash-o');
-                trashbin.append(icon);
-                optional.append(trashbin);
-            }
-     
-            mess.append(optional);
-            allmess.append(mess);
             
+            // Add new message to DOM.
+            let mess = template({'data': data});
+            allmess.innerHTML += mess;
+
             // Update delete function for the whole page
             deletemess();
             
@@ -167,30 +159,33 @@ document.addEventListener('DOMContentLoaded', () => {
                         var text = "";
                         var i;
                         for (i = 0; i < data.messages.length; i++) {
-                            // Do not display trashbin if message has been deleted
-                            // Only display trashbin for messages from this user
-                            if (data.messages[i]["content"].localeCompare("Message has been deleted." ) == 0) {
-                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                                + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
-                                + data.messages[i]["content"] +"</span>"
-                            }
-                            else if (data.messages[i]["user"] === user) {
-                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
-                                + "<b>" + data.messages[i]["user"] + ":</b> " 
-                                + data.messages[i]["content"] 
-                                + "<span class=\"optional\">" + data.messages[i]["timestamp"]
-                                + "<a class=\"trashbin\"" 
-                                + "value=" + data.messages[i]["mess_id"] 
-                                + " href=\"#\"><i class=\"fa fa-trash-o\"></i>"
-                                + "</a></span></p>";
-                            }
-                            else {
-                                text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
-                                + "<b>" + data.messages[i]["user"] + ":</b> " 
-                                + data.messages[i]["content"] 
-                                + "<span class=\"optional\">" + data.messages[i]["timestamp"]
-                                + "</span></p>";
-                            }
+                            // Add new message to DOM.
+                            let mess = template({'data': data.messages[i]});
+                            text += mess;
+                            // // Do not display trashbin if message has been deleted
+                            // // Only display trashbin for messages from this user
+                            // if (data.messages[i]["content"].localeCompare("Message has been deleted." ) == 0) {
+                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
+                            //     + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
+                            //     + data.messages[i]["content"] +"</span>"
+                            // }
+                            // else if (data.messages[i]["user"] === user) {
+                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
+                            //     + "<b>" + data.messages[i]["user"] + ":</b> " 
+                            //     + data.messages[i]["content"] 
+                            //     + "<span class=\"optional\">" + data.messages[i]["timestamp"]
+                            //     + "<a class=\"trashbin\"" 
+                            //     + "value=" + data.messages[i]["mess_id"] 
+                            //     + " href=\"#\"><i class=\"fa fa-trash-o\"></i>"
+                            //     + "</a></span></p>";
+                            // }
+                            // else {
+                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
+                            //     + "<b>" + data.messages[i]["user"] + ":</b> " 
+                            //     + data.messages[i]["content"] 
+                            //     + "<span class=\"optional\">" + data.messages[i]["timestamp"]
+                            //     + "</span></p>";
+                            // }
                         }                       
                         document.querySelector('#allmessages').innerHTML = text;
                     }

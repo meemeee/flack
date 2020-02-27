@@ -49,56 +49,48 @@
             <hr>
             <div id="allmessages" class="chat-body py-3">
                 {% for message in messages %}
-                    {% if message.user == user %}
                     <div class="row my-2">
-                        <!-- For non-deleted message, display timestamp and trashbin -->
+                        <!-- User's messages -->
+                        {% if message.user == user %}
                         <div class="col-md-8 ml-auto">
-                            {% if message.content != "Message has been deleted." %} 
                             <span id="{{ message.mess_id }}" 
                                 class="d-flex justify-content-end outgoing-message">
-                                <span class="optional d-flex align-items-center"
-                                data-livestamp="{{ message.timestamp }}">
-                                    <a class="trashbin" value="{{ message.mess_id }}" href="#">
-                                        <i class="mr-2 fa fa-trash-o"></i>
-                                    </a>
-                                    {{ message.timestamp }}
-                                </span>
-                                <p class="">{{ message.content }}</p>
-                            </span>
-                            {% else %}
-                            <span id="{{ message.mess_id }}" class="outgoing-message">
-                                <p class="deleted">{{ message.content }}</p>
-                            </span>
-                            {% endif %}
+                                <!-- For non-deleted message, display timestamp and trashbin -->
+                                {% if message.content != "Message has been deleted." %}
+                                    <span class="optional d-flex align-items-center">
+                                        <a class="trashbin" value="{{ message.mess_id }}" href="#">
+                                            <i class="mr-2 fa fa-trash-o"></i>
+                                        </a>
+                                        {{ message.timestamp }}
+                                    </span>
+                                    <p>{{ message.content }}</p>
+                                {% else %}
+                                    <p class="deleted">{{ message.content }}</p>
+                                {% endif %}
+                            </span>                           
                         </div>
-                    </div>
-                    {% else %}
-                    <div class="row my-2">
-                        <!-- For non-deleted message, display timestamp and trashbin -->
+
+                        <!-- Others' messages -->
+                        {% else %}
                         <div class="col-md-8 mr-auto">
-                            {% if message.content != "Message has been deleted." %} 
                             <span id="{{ message.mess_id }}" 
                                 class="d-flex justify-content-start incoming-message">
-                                <p class="">{{ message.content }}</p>
-                                <span class="optional d-flex align-items-center"
-                                data-livestamp="{{ message.timestamp }}">
-                                    <a class="trashbin" value="{{ message.mess_id }}" href="#">
-                                        <i class="mr-2 fa fa-trash-o"></i>
-                                    </a>
-                                    {{ message.timestamp }}
+                                <span class="align-self-center mr-2">
+                                    {{ message.user }}:
                                 </span>
-                                
+                                <!-- For non-deleted message, display timestamp -->
+                                {% if message.content != "Message has been deleted." %}
+                                    <p>{{ message.content }}</p>
+                                    <span class="optional d-flex align-items-center">
+                                        {{ message.timestamp }}
+                                    </span>
+                                {% else %}
+                                    <p class="deleted">{{ message.content }}</p>
+                                {% endif %}
                             </span>
-                            {% else %}
-                            <span id="{{ message.mess_id }}" class="incoming-message">
-                                <p class="deleted">{{ message.content }}</p>
-                            </span>
-                            {% endif %}
                         </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                    
-                
 
                 <!-- Display welcome mess if this is a new channel -->
                 {% else %}
@@ -129,5 +121,45 @@
 </div> 
 
 <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script id="ws_new_message" type="text/x-handlebars-template">
+
+    <div class="row my-2">
+        <!-- {% raw -%} -->
+        {{#with data}}
+        <!-- User's messages -->
+        {{#if_eq user}}
+        <div class="col-md-8 ml-auto">
+            <span id="{{ mess_id }}" 
+                class="d-flex justify-content-end outgoing-message">
+                <span class="optional d-flex align-items-center">
+                    <a class="trashbin" value="{{ mess_id }}" href="#">
+                        <i class="mr-2 fa fa-trash-o"></i>
+                    </a>
+                    {{{ timestamp }}}
+                </span>
+                <p>{{{ content }}}</p>
+            </span>                           
+        </div>
+
+        <!-- Others' messages -->
+        {{ else }}
+        <div class="col-md-8 mr-auto">
+            <span id="{{ mess_id }}" 
+                class="d-flex justify-content-start incoming-message">
+                <span class="align-self-center mr-2">
+                    {{{ user }}}:
+                </span>
+                <p>{{{ content }}}</p>
+                <span class="optional d-flex align-items-center">
+                    {{{ timestamp }}}
+                </span>
+            </span>
+        </div>
+        {{/if_eq}}
+        {{/with}}
+        <!-- {%- endraw %} -->
+    </div>
+
+</script>
 <script src="{{ url_for('static', filename='channel.js') }}"></script>
 {% endblock %}
