@@ -6,32 +6,48 @@
 
 {% block main %}
 <div class="row flex-nowrap">
-    <div class="vertical-nav bg-white px-3 py-2" id="sidebar">
-        <p class="text-gray font-weight-bold px-3 mb-2">CHATS</p>
-        <div class="px-3">
+    <div class="vertical-nav bg-white py-2" id="sidebar">
+        <p class="text-gray font-weight-bold px-2 mx-2 mb-2">CHATS</p>
+        <div class="px-2 mx-2">
             <div class="chat-head">
                 <h4 class="m-0" id="user_name">{{ user }}</h4>
                 <p class="text-success">Online</p>
             </div>
         </div>
-        <hr>
-
-        <ul class="nav flex-column bg-white mb-0 px-3">
-            {% for item in channels %}
-            <li class="single-channel" data-name="{{ item }}">
-                <a href="/channels/{{ item }}" style="color:rgb(37, 37, 37)">
-                    # {{ item }}
+    
+        <div class="nav flex-column bg-white mb-0">
+            <div class="d-flex mx-2 px-2">
+                <p class="mr-1 mb-1"><b>Channels</b></p>
+                <a href="{{ url_for('new_channel') }}" style="color:rgb(54, 54, 54)">
+                    <i class="fa fa-plus-circle"></i>
                 </a>
-            </li>
+            </div>
+            {% for channel in channels %}
+            <!-- <li class="single-channel" data-name="{{ channel }}">
+                <a href="/channels/{{ channel }}" style="color:rgb(37, 37, 37)">
+                    # {{ channel }}
+                </a>
+            </li> -->
+            
+            <a class="mx-2 nav-item single-channel" data-name="{{ channel }}" 
+            href="/channels/{{ channel }}" style="text-decoration: none;">
+                <div class="rounded-pill px-2 py-2">
+                    <span id="{{ channel }}">
+                        {{ channel }}
+                    </span>
+                    <p class="mb-0 text-truncate">
+                        Some description goes here. Some description goes here</p>
+                </div>
+            </a>
             {% else %}
                 <p>There's no channel yet.</p>
             {% endfor %}
-        </ul>
-        <div class="my-5 px-3">
-            <a href="{{ url_for('new_channel') }}" style="color:rgb(54, 54, 54)">
-                <i class="fa fa-plus-circle"></i> New channel
-            </a>
+            
         </div>
+        <div class="d-flex justify-content-center">
+            
+        </div>
+        
     </div>
 
 
@@ -63,9 +79,9 @@
                                         </a>
                                         {{ message.timestamp }}
                                     </span>
-                                    <p>{{ message.content }}</p>
+                                    <p class="mr-2">{{ message.content }}</p>
                                 {% else %}
-                                    <p class="deleted">{{ message.content }}</p>
+                                    <p class="deleted mr-2">{{ message.content }}</p>
                                 {% endif %}
                             </span>                           
                         </div>
@@ -76,17 +92,25 @@
                             <span id="{{ message.mess_id }}" 
                                 class="d-flex justify-content-start incoming-message">
                                 <span class="align-self-center mr-2">
-                                    {{ message.user }}:
+                                    <p class="avatar text-center" class="">{{ message.user|first }}</p>
+                               
                                 </span>
-                                <!-- For non-deleted message, display timestamp -->
-                                {% if message.content != "Message has been deleted." %}
-                                    <p>{{ message.content }}</p>
-                                    <span class="optional d-flex align-items-center">
-                                        {{ message.timestamp }}
+                                <span>    
+                                    <span class="mr-2">          
+                                        {{ message.user }}:
                                     </span>
-                                {% else %}
-                                    <p class="deleted">{{ message.content }}</p>
-                                {% endif %}
+                                    <span class="d-flex">
+                                        <!-- For non-deleted message, display timestamp -->
+                                        {% if message.content != "Message has been deleted." %}
+                                            <p>{{ message.content }}</p>
+                                            <span class="optional align-self-center">
+                                                {{ message.timestamp }}
+                                            </span>
+                                        {% else %}
+                                            <p class="deleted">{{ message.content }}</p>
+                                        {% endif %}
+                                    </span>
+                                </span>
                             </span>
                         </div>
                         {% endif %}
@@ -131,13 +155,17 @@
         <div class="col-md-8 ml-auto">
             <span id="{{ mess_id }}" 
                 class="d-flex justify-content-end outgoing-message">
-                <span class="optional d-flex align-items-center">
-                    <a class="trashbin" value="{{ mess_id }}" href="#">
-                        <i class="mr-2 fa fa-trash-o"></i>
-                    </a>
-                    {{{ timestamp }}}
-                </span>
-                <p>{{{ content }}}</p>
+                {{#unless content "Message has been deleted." }}
+                    <span class="optional d-flex align-items-center">
+                        <a class="trashbin" value="{{ mess_id }}" href="#">
+                            <i class="mr-2 fa fa-trash-o"></i>
+                        </a>
+                        {{{ timestamp }}}
+                    </span>
+                    <p class="mr-2">{{{ content }}}</p>
+                {{ else }}
+                    <p class="deleted mr-2">{{{ content }}}</p>
+                {{/unless}}
             </span>                           
         </div>
 
@@ -147,11 +175,24 @@
             <span id="{{ mess_id }}" 
                 class="d-flex justify-content-start incoming-message">
                 <span class="align-self-center mr-2">
-                    {{{ user }}}:
+                    <p class="avatar text-center" class="">
+                        {{#firstLetter user }} {{/firstLetter }}
+                    </p>
                 </span>
-                <p>{{{ content }}}</p>
-                <span class="optional d-flex align-items-center">
-                    {{{ timestamp }}}
+                <span>
+                    <span class="mr-2">          
+                        {{{ user }}}
+                    </span>
+                    <span class="d-flex">
+                    {{#unless content "Message has been deleted." }}
+                        <p>{{{ content }}}</p>
+                        <span class="optional align-self-center">
+                            {{{ timestamp }}}
+                        </span>
+                    {{ else }}
+                        <p class="deleted">{{{ content }}}</p>
+                    {{/unless}}
+                    </span>
                 </span>
             </span>
         </div>

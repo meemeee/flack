@@ -3,7 +3,10 @@ const template = Handlebars.compile(document.querySelector('#ws_new_message').in
 
 // Get user name
 const user = document.querySelector('#user_name').innerHTML;
-
+// If no namde provided, redirect to index page
+if (user === 'None') {
+    window.location.replace('/');
+}
 // Handlebars helper
 Handlebars.registerHelper('if_eq', function(a, opts) {
     if (a === user) {
@@ -11,6 +14,18 @@ Handlebars.registerHelper('if_eq', function(a, opts) {
     } else {
         return opts.inverse(this);
     }
+});
+
+Handlebars.registerHelper('unless', function(a, b, opts) {
+    if (a === b) {
+        return opts.inverse(this);
+    } else {
+        return opts.fn(this);
+    }
+});
+
+Handlebars.registerHelper('firstLetter', function(a) {
+    return a[0];
 });
 
 document.addEventListener('DOMContentLoaded', () => {  
@@ -32,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Emit message whenever 'Send' button is clicked on      
         document.querySelector('form').onsubmit = event => {
             event.preventDefault();
-            let count = document.querySelectorAll('.single-message').length;
+            let count = document.querySelectorAll('.incoming-message').length + document.querySelectorAll('.outgoing-message').length;
             const message = document.querySelector('#message').value;
             
             // ignore empty message
@@ -40,8 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             
             else {
-                if (document.querySelector('#welcome')) 
+                // Remove welcome message if any
+                if (document.querySelector('#welcome')) {
                     document.querySelector('#allmessages').innerHTML = "";
+                }
+                    
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
                 // const user = localStorage.getItem('name');
@@ -65,8 +83,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 var result = confirm("Do you want to remove this message?");
                 if (result) {
                     const id = a.getAttribute('value');
-                    // const user = localStorage.getItem('name');
-                    // const user = {{ user }};
                     const channel_name = document.querySelector('#channel_title').innerHTML;
 
                     socket.emit('delete message', {"channel": channel_name, "mess_id": id, "user": user});
@@ -79,13 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('add new message', data => {
         // Only update message if the same channel is open
         if (window.location.pathname.indexOf("/channels/" + `${data.channel}`) > -1) {
-            // if this is the 1st message, clear newchannel_content first
-            if (!document.querySelector('.outgoing-message') || 
-                !document.querySelector('.incoming-message'))
-                document.querySelector('#allmessages').innerHTML = "";
-            
+                
             // Add new message to DOM.
-            let mess = template({'data': data});
+            let mess = template({'data': data});        
             allmess.innerHTML += mess;
 
             // Update delete function for the whole page
@@ -98,30 +110,34 @@ document.addEventListener('DOMContentLoaded', () => {
         // else, subtly alert new messages on side bar
         else {
             const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
+            console.log(newmess_channel)
             // Discard action if there has been an earlier alert
             if (newmess_channel.classList.contains('unread')) 
                 return false;
             else {
-                const newmess_alert = document.createElement('i');
-                newmess_alert.setAttribute('class', 'fa fa-commenting-o');
-                newmess_channel.setAttribute('class', 'unread');
-                newmess_channel.append(newmess_alert);
+                newmess_channel.classList.add('unread');
             }
         }   
     });
 
     // When a message is deleted, update the whole channel
     socket.on('deletion complete', data => {
-        del_mess = document.getElementById(`${data.mess_id}`);
-        del_mess.innerHTML = `<b>${data.user}:</b> <span class="deleted">${data.content}</span>`;      
+        var deleted_mess = document.getElementById(`${data.mess_id}`);
+        if (data.user === user) {
+            deleted_mess.innerHTML = `<p class="deleted mr-2">${data.content}</p>`;
+        }
+        else {
+            deleted_mess.innerHTML = `<span class="align-self-center mr-2">${data.user}:</span>
+                                        <p class="deleted">${data.content}</p>`;
+        }      
     });
 
     // Create Ajax request when changing channels
-    document.querySelectorAll('.single-channel').forEach(li => {
-        li.onclick = () => {
+    document.querySelectorAll('.single-channel').forEach(item => {
+        item.onclick = () => {
             // Initialize new request
             const request = new XMLHttpRequest();
-            const channel = li.dataset.name;
+            const channel = item.dataset.name;
             // var user_name= localStorage.getItem('name');
             request.open('POST', '/ajax_channel');
 
@@ -131,9 +147,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = JSON.parse(request.responseText);
                 
                 // Remove 'unread' icon if any
-                if (li.classList.contains('unread')) {
-                    li.classList.remove('unread');
-                    li.querySelector('.fa-commenting-o').remove();
+                if (item.classList.contains('unread')) {
+                    item.classList.remove('unread');
                 }
                     
                 // Update the chat div
@@ -144,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Toggle "active" class in channel name
                     if (document.querySelector('.active'))
                         document.querySelector('.active').classList.remove("active");      
-                    li.classList.add("active");
+                        item.classList.add("active");
                     
                     // Replacing content on layout
                     document.querySelector('#channel_title').innerHTML = data.channel;
@@ -162,30 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             // Add new message to DOM.
                             let mess = template({'data': data.messages[i]});
                             text += mess;
-                            // // Do not display trashbin if message has been deleted
-                            // // Only display trashbin for messages from this user
-                            // if (data.messages[i]["content"].localeCompare("Message has been deleted." ) == 0) {
-                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\"><b>" 
-                            //     + data.messages[i]["user"] + ":</b> <span class=\"deleted\">" 
-                            //     + data.messages[i]["content"] +"</span>"
-                            // }
-                            // else if (data.messages[i]["user"] === user) {
-                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
-                            //     + "<b>" + data.messages[i]["user"] + ":</b> " 
-                            //     + data.messages[i]["content"] 
-                            //     + "<span class=\"optional\">" + data.messages[i]["timestamp"]
-                            //     + "<a class=\"trashbin\"" 
-                            //     + "value=" + data.messages[i]["mess_id"] 
-                            //     + " href=\"#\"><i class=\"fa fa-trash-o\"></i>"
-                            //     + "</a></span></p>";
-                            // }
-                            // else {
-                            //     text += "<p id=" + data.messages[i]["mess_id"] + " class=\"single-message\">"
-                            //     + "<b>" + data.messages[i]["user"] + ":</b> " 
-                            //     + data.messages[i]["content"] 
-                            //     + "<span class=\"optional\">" + data.messages[i]["timestamp"]
-                            //     + "</span></p>";
-                            // }
                         }                       
                         document.querySelector('#allmessages').innerHTML = text;
                     }
