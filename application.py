@@ -96,6 +96,7 @@ def new_channel():
     # User reached via submitting form
     else:
         name = request.form.get("channel_name")
+        description = request.form.get("channel_desc")
         if not name:
             return render_template("error.html", message="You must provide channel name.")
         
@@ -106,6 +107,8 @@ def new_channel():
             return render_template("error.html", message="Unavailable channel name. Please choose another.")
         else:
             channel_list.update({name: []})
+            # channel_list.update({name: {description: description, message: []})
+
 
         return redirect("/channels/" + name)
 

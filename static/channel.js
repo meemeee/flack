@@ -39,6 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
     var allmess = document.querySelector('#allmessages');    
     allmess.scrollTop = allmess.scrollHeight;
     
+    
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -57,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 // Remove welcome message if any
                 if (document.querySelector('#welcome')) {
-                    document.querySelector('#allmessages').innerHTML = "";
+                    console.log("2")
+                    allmess.innerHTML = "";
                 }
                     
                 const id = count+1;
@@ -80,22 +82,33 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.trashbin').forEach(a => {
             a.onclick = event => {
                 event.preventDefault();
-                var result = confirm("Do you want to remove this message?");
-                if (result) {
+
+                // Activate confirmation modal
+                $('#remove-message-confirmation').modal();
+                document.querySelector('#remove-message-confirmed').onclick = () => {
                     const id = a.getAttribute('value');
                     const channel_name = document.querySelector('#channel_title').innerHTML;
+                    $('#remove-message-confirmation').modal('hide');
 
                     socket.emit('delete message', {"channel": channel_name, "mess_id": id, "user": user});
-                };
+                    
+                }
             }       
         });
     }
+
+  
 
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
         // Only update message if the same channel is open
         if (window.location.pathname.indexOf("/channels/" + `${data.channel}`) > -1) {
-                
+            console.log("3")
+            // Remove welcome message if any
+            if (document.querySelector('#welcome')) {
+                console.log("1")
+                allmess.innerHTML = "";
+            }
             // Add new message to DOM.
             let mess = template({'data': data});        
             allmess.innerHTML += mess;
@@ -110,11 +123,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // else, subtly alert new messages on side bar
         else {
             const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
-            console.log(newmess_channel)
+            const newmess_channel_name = document.querySelector(`[id='${data.channel}']`);
+
+           
             // Discard action if there has been an earlier alert
             if (newmess_channel.classList.contains('unread')) 
                 return false;
             else {
+                const newmess_alert = document.createElement('i');
+                newmess_alert.setAttribute('class', 'fa fa-circle ml-2');
+                newmess_channel_name.append(newmess_alert);
                 newmess_channel.classList.add('unread');
             }
         }   
@@ -122,13 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a message is deleted, update the whole channel
     socket.on('deletion complete', data => {
-        var deleted_mess = document.getElementById(`${data.mess_id}`);
         if (data.user === user) {
+            var deleted_mess = document.getElementById(`${data.mess_id}`);
             deleted_mess.innerHTML = `<p class="deleted mr-2">${data.content}</p>`;
         }
         else {
-            deleted_mess.innerHTML = `<span class="align-self-center mr-2">${data.user}:</span>
-                                        <p class="deleted">${data.content}</p>`;
+            var deleted_mess = document.querySelector(`[data-id='${data.mess_id}']`);
+            deleted_mess.innerHTML = `<p class="deleted">${data.content}</p>`;
         }      
     });
 
@@ -146,8 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Extract JSON data from request
                 const data = JSON.parse(request.responseText);
                 
-                // Remove 'unread' icon if any
+                // Remove 'unread' class and icon if any
                 if (item.classList.contains('unread')) {
+                    item.querySelector('.fa-circle').remove();
                     item.classList.remove('unread');
                 }
                     
@@ -166,7 +185,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Check if this is a new channel
                     if (data.messages.length === 0) {
-                        var newchannel_content = `<i>This is the beginning of <b>${data.channel}</b> channel.</i>`;
+                        var newchannel_content = 
+                        `<p id="welcome"><i>This is the beginning of <b>${data.channel}</b> channel.</i></p>`;
                         document.querySelector('#allmessages').innerHTML = newchannel_content;
                     }
                     else {
