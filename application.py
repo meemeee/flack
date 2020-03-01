@@ -52,7 +52,7 @@ def login():
 def channels():
     """ Display all channels """
 
-    return render_template("channels.html", channels=channel_list, user=session.get("username"))
+    return render_template("channel.html", channels=channel_list, user=session.get("username"))
 
 @app.route("/ajax_channel", methods=["POST"])
 @login_required
@@ -65,9 +65,10 @@ def change_channel():
     if not channel in channel_list:
         return jsonify({"success": False})
         
-    messages = channel_list[channel]
+    messages = channel_list[channel]['messages']
+    description = channel_list[channel]['desc']
 
-    return jsonify({"success": True, "messages":messages, "channel":channel, "user":session.get("username")})
+    return jsonify({"success": True, "messages":messages, "desc":description, "channel":channel, "user":session.get("username")})
 
 
 @app.route("/channels/<string:channel>")
@@ -79,9 +80,11 @@ def channel(channel):
     if not channel in channel_list:
         return render_template("error.html", message="No channel with this name.")
         
-    messages = channel_list[channel]
+    messages = channel_list[channel]['messages']
+    description = channel_list[channel]['desc']
 
-    return render_template("channel.html", messages=messages, channel=channel, channels=channel_list, user=session.get("username"))
+
+    return render_template("channel.html", messages=messages, desc=description, channel=channel, channels=channel_list, user=session.get("username"))
 
 
 @app.route("/new_channel", methods=["POST", "GET"])
@@ -97,18 +100,23 @@ def new_channel():
     else:
         name = request.form.get("channel_name")
         description = request.form.get("channel_desc")
+  
         if not name:
             return render_template("error.html", message="You must provide channel name.")
         
-        elif len(name) > 25 or ' ' in name:
-            return render_template("error.html", message="Channel name must not exceed 25 characters or contain space.")
-        
+        elif len(name) > 32 or ' ' in name:
+            return render_template("error.html", message="Channel name must not exceed 32 characters or contain space.")
+        elif len(description) > 128: 
+            return render_template("error.html", message="Channel description must not exceed 128 characters or contain space.")
+
         elif name in channel_list:
             return render_template("error.html", message="Unavailable channel name. Please choose another.")
         else:
-            channel_list.update({name: []})
-            # channel_list.update({name: {description: description, message: []})
-
+            # Demo: channel_list = [{name: {'desc': description, 'messages': []}},...]
+            Dict = {}
+            Dict[name] = {'desc': description, 'messages': []}
+   
+            channel_list.update(Dict)
 
         return redirect("/channels/" + name)
 
@@ -123,11 +131,11 @@ def new_mess(data):
     channel_name = data["channel"]
 
     # Before adding new message, remove 1 last message if len exceeds
-    if len(channel_list[channel_name]) == 100:
-        del channel_list[channel_name][0]
+    if len(channel_list[channel_name]['messages']) == 100:
+        del channel_list[channel_name]['messages'][0]
     
     # Add message to global var channel_list
-    channel_list[channel_name].append({"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp})
+    channel_list[channel_name]['messages'].append({"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp})
 
     # Broadcast new message
     emit('add new message', {"channel": channel_name, "mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
@@ -140,7 +148,7 @@ def delete(data):
     user = data["user"]
 
     # Delete message from memory
-    messages = channel_list[channel_name]
+    messages = channel_list[channel_name]['messages']
     for message in messages:
         if message["mess_id"] == int(mess_id):
             content = "Message has been deleted."

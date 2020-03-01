@@ -1,7 +1,11 @@
 {% extends "layout.html" %}
 
 {% block tittle %}
+{% if channel %}
 {{ channel }}
+{% else %}
+All channels
+{% endif %}
 {% endblock %}
 
 {% block main %}
@@ -25,28 +29,25 @@
                     <i class="fa fa-plus-circle"></i>
                 </a>
             </div>
-            {% for item in channels %}
-            {% if channel == item %}
-            <a class="mx-3 nav-item single-channel active" data-name="{{ item }}" 
-            href="/channels/{{ item }}" style="text-decoration: none;">
+            {% for channelName, channelInfo in channels.items() %}
+                {% if channel == channelName %}
+                <a class="mx-3 nav-item single-channel active" data-name="{{ channelName }}" 
+                href="/channels/{{ channelName }}" style="text-decoration: none;">
+                {% else %}
+                <a class="mx-3 nav-item single-channel" data-name="{{ channelName }}" 
+                href="/channels/{{ channelName }}" style="text-decoration: none;">
+                {% endif %}
+                    <div class="rounded-pill px-2 py-3">
+                        <h6 id="{{ channelName }}">
+                            {{ channelName }}
+                        </h6>
+                        <p class="mb-0 channel-desc text-truncate">
+                        {{ channelInfo.desc }}</p>
+                    </div>
+                </a>
             {% else %}
-            <a class="mx-3 nav-item single-channel" data-name="{{ item }}" 
-            href="/channels/{{ item }}" style="text-decoration: none;">
-            {% endif %}
-                <div class="rounded-pill px-2 py-3">
-                    <h6 id="{{ item }}">
-                        {{ item }}
-                    </h6>
-                    <p class="mb-0 text-truncate">
-                        Some description goes here. Some description goes here</p>
-                </div>
-            </a>
-            {% else %}
-                <p>There's no channel yet.</p>
+                <p class="px-2 mx-3 my-4">There's no channel yet.</p>
             {% endfor %}
-            
-        </div>
-        <div class="d-flex justify-content-center">
             
         </div>
         
@@ -54,21 +55,30 @@
 
 
     <main class="page-content p-2" id="content">
-        
-
         <div id="chatbox" class="d-flex flex-column">
             <!-- Toggle button -->
-            <button id="sidebarCollapse" type="button" class="btn shadow-none align-self-start">
+            <button id="sidebarCollapse" type="button" class="btn shadow-none align-self-start mb-2">
                 <i class="text-gray fa fa-chevron-left" style="font-size: 1.4rem;"></i>
             </button> 
             <div class="chat-head align-items-center">
+                <!-- Template for channel page -->
+                {% if channel %}      
                 <div>
                     <h4 id="channel_title" class="m-0">{{ channel }}</h4>
-                    <p><i>Some description goes here. Some description goes here</i></p>
+                    <p class="channel-desc" id="current-channel-desc" style="font-size: 1rem;">{{ desc }}</p>
                 </div>
+                <!-- Template for channels page -->
+                {% else %}
+                <div>
+                <h4 id="channel_title" class="m-0">Welcome</h4>
+                <p><i>Select a channel to start chatting.</i></p>
+                </div>
+                {% endif %}
             </div>
             <hr>
             <div id="allmessages" class="chat-body py-3">
+                <!-- Template for channel page -->
+                {% if channel %}
                 {% for message in messages %}
                     <div class="row my-2">
                         <!-- User's messages -->
@@ -127,13 +137,15 @@
                     <i>This is the beginning of <b>{{ channel }}</b> channel.</i>
                 </p>
                 {% endfor %}
+                {% endif %}
             </div>
 
-            <div id="type_message" class="chat-foot mt-auto mb-3">
+          
+            <div id="type_message" class="chat-foot mt-auto mb-3" 
+            style="{% if not channel %}display:none{% endif %}">
                 <form action="" method="post">
                     <div class="form-group d-flex">
-                        <!-- <textarea id="message" name="message" class="form-control message"
-                            placeholder="Write a message"></textarea> -->
+
                         <input autocomplete="off" class="form-control rounded-pill shadow-none" 
                             id="message" name="message" 
                             placeholder="Write a message" type="text">

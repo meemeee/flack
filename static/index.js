@@ -1,4 +1,10 @@
 $(document).ready(function () {
+    // Redirect to last channel if this is not the first visit
+    if (localStorage.getItem('last_channel')) {
+        document.querySelector('#last_channel').href = localStorage.getItem('last_channel');
+        // Clear previous lastChannel value
+        localStorage.removeItem('last_channel');
+    }
 
     // Fuction to add and remove the animations
     function animateCSS(element, animationName, callback) {

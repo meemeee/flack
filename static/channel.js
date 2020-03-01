@@ -182,6 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     // Replacing content on layout
                     document.querySelector('#channel_title').innerHTML = data.channel;
+                    document.querySelector('#current-channel-desc').innerHTML = data.desc;
                     
                     // Check if this is a new channel
                     if (data.messages.length === 0) {
@@ -231,6 +232,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Remembering the Channel before closing window
-window.addEventListener('unload', event => {
+window.addEventListener('unload', () => {
     localStorage.setItem('last_channel', window.location.href);
 });
