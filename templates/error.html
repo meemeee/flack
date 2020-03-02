@@ -4,19 +4,21 @@
     Error!
 {% endblock %}
 
-{% block main %}   
-<div class="row align-items-center p-5 my-5">
-    <div class="col-lg-6">
-        <div class="mb-4 animated fadeInDown delay-1s">
-            <h2>Ooopsiee...!</h2>
-            <h5 class="my-5">{{ message }}</h5>
-            
-            <button onclick="goBack()" class="btn btn-primary btn-lg rounded-pill">Back</button>                    
+{% block main %}
+<div class="container">  
+    <div class="row align-items-center p-5 my-5">
+        <div class="col-lg-6">
+            <div class="mb-4">
+                <h2>Ooopsiee...!</h2>
+                <h5 class="my-5">{{ message }}</h5>
+                
+                <button onclick="goBack()" class="btn btn-primary btn-lg shadow-none rounded-pill">Back</button>                    
+            </div>
         </div>
-    </div>
 
-    <div class="col-lg-6 ml-auto">
-        <img src="../static/media/10.jpg" alt="" class="img-fluid animated fadeInDown delay-1s">
+        <div class="col-lg-6 ml-auto">
+            <img src="../static/media/10.jpg" alt="" class="img-fluid">
+        </div>
     </div>
 </div>
 

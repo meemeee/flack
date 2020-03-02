@@ -7,7 +7,9 @@ const user = document.querySelector('#user_name').innerHTML;
 if (user === 'None') {
     window.location.replace('/');
 }
+
 // Handlebars helper
+// Compareing usernames
 Handlebars.registerHelper('if_eq', function(a, opts) {
     if (a === user) {
         return opts.fn(this);
@@ -15,7 +17,7 @@ Handlebars.registerHelper('if_eq', function(a, opts) {
         return opts.inverse(this);
     }
 });
-
+// Find out if this is a deleted message
 Handlebars.registerHelper('unless', function(a, b, opts) {
     if (a === b) {
         return opts.inverse(this);
@@ -23,7 +25,7 @@ Handlebars.registerHelper('unless', function(a, b, opts) {
         return opts.fn(this);
     }
 });
-
+// Returns first letter of username
 Handlebars.registerHelper('firstLetter', function(a) {
     return a[0];
 });
@@ -38,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Scroll to to bottom to see latest messages
     var allmess = document.querySelector('#allmessages');    
     allmess.scrollTop = allmess.scrollHeight;
-    
     
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
@@ -58,14 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
             else {
                 // Remove welcome message if any
                 if (document.querySelector('#welcome')) {
-                    console.log("2")
                     allmess.innerHTML = "";
                 }
                     
                 const id = count+1;
                 const channel = document.querySelector('#channel_title').innerHTML;         
-                // const user = localStorage.getItem('name');
-                // const user = {{ user }};
                 const timestamp = new Date().getHours() + ":" + new Date().getMinutes();
                 
                 socket.emit('send message', {"channel": channel, "mess_id": id, "user": user, "content": message, "timestamp": timestamp});
@@ -91,22 +89,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     $('#remove-message-confirmation').modal('hide');
 
                     socket.emit('delete message', {"channel": channel_name, "mess_id": id, "user": user});
-                    
                 }
             }       
         });
     }
 
-  
-
     // When a new message is sent, update the whole channel
     socket.on('add new message', data => {
         // Only update message if the same channel is open
         if (window.location.pathname.indexOf("/channels/" + `${data.channel}`) > -1) {
-            console.log("3")
             // Remove welcome message if any
             if (document.querySelector('#welcome')) {
-                console.log("1")
                 allmess.innerHTML = "";
             }
             // Add new message to DOM.
@@ -120,11 +113,10 @@ document.addEventListener('DOMContentLoaded', () => {
             allmess.scrollTop = allmess.scrollHeight;
         }
 
-        // else, subtly alert new messages on side bar
+        // else, alert new messages on side bar
         else {
             const newmess_channel = document.querySelector(`[data-name='${data.channel}']`);
             const newmess_channel_name = document.querySelector(`[id='${data.channel}']`);
-
            
             // Discard action if there has been an earlier alert
             if (newmess_channel.classList.contains('unread')) 
@@ -173,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Update the chat div
                 if (data.success) {
                     // Replacing page title
-                    document.title = "Chat | " + data.channel;
+                    document.title = "Flack | " + data.channel;
 
                     // Toggle "active" class in channel name
                     if (document.querySelector('.active'))

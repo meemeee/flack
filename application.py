@@ -30,16 +30,15 @@ def login_required(f):
 
 @app.route("/", methods=["GET", "POST"])
 def login():
-    # Forget any user_id
-    # session.clear()
 
     # User reached via POST by submitting the form
     if request.method == "POST":
         # Remember which user has logged in
         session["username"] = request.form.get("name")
         
-        # Redirect to book page
+        # Redirect to channels page
         return redirect("/channels")
+
     # User reached via GET by clicking a link or redirect
     else:
         if session.get("username") is None:
@@ -47,12 +46,17 @@ def login():
         else: 
             return render_template("index.html", user=session.get("username"))
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    session.clear()
+    return redirect("/")
+
 @app.route("/channels", methods=["GET", "POST"])
 @login_required
 def channels():
     """ Display all channels """
-
     return render_template("channel.html", channels=channel_list, user=session.get("username"))
+
 
 @app.route("/ajax_channel", methods=["POST"])
 @login_required
@@ -82,7 +86,6 @@ def channel(channel):
         
     messages = channel_list[channel]['messages']
     description = channel_list[channel]['desc']
-
 
     return render_template("channel.html", messages=messages, desc=description, channel=channel, channels=channel_list, user=session.get("username"))
 
@@ -140,6 +143,7 @@ def new_mess(data):
     # Broadcast new message
     emit('add new message', {"channel": channel_name, "mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
+
 @socketio.on('delete message')
 @login_required
 def delete(data):
@@ -161,14 +165,7 @@ def delete(data):
     emit('deletion complete', {"mess_id": mess_id, "user": user, "content": content, "timestamp": timestamp}, broadcast=True)
 
 
-
-
-    
-
-
-
-
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    # app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=8000)
     

@@ -1,10 +1,53 @@
-# Project 2
+# Flack Chat App
 
-Web Programming with Python and JavaScript
+## Table of contents
+* [Description](#description)
+* [Installation](#installation)
+* [Technologies](#technologies)
 
-App functionalities:
-- Index page: take name input if user is here the 1st time. Else, redirect user to their last channel.
-- Channels page: display usersname + all channels on the left hand side. Direct users to select a single channel.
-- Single channel page: selected channel will be displayed in *bold*. If new messages come up in another channel, there will be a *new message* icon next to channel name.
-- Delete function: hover over message to see. Deleted messages will be updated via websocket.
-- Create a new channel: users will be redirect to the new channel after creation.
+## Description
+
+This project is an online messaging service using Flask, similar in spirit to [Slack](https://slack.com/features). The project uses Javascript to run code server-side, AJAX to retrieve data from servers asynchronously, and Socket.IO to communicate between clients and servers.
+
+Made for project 2 of [CS50W](https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/).
+
+### Features
+- **Display name**: On the fist visit, user will be prompted to log in with a display name, which will eventually be associated with every message the user sends.
+- **Create channels**: Any user can create a new channel, so long as its name doesn’t conflict with the name of an existing channel.
+- **Channel List**: the user can see a list of all current channels, switching among which will not require reloading the page.
+- **Messages View**: Once a channel is selected, the user can see up to 100 latest messages. 
+- **Send and receive messages in real-time**: Sending and receiving messages will not require reloading the page. 
+- **Remove their own messages**: the user can remove his own messages, also in real-time.
+- **Remember the Channel**: If the user closes a channel page (by closing the web browser window), he will be taken back to that channel in his next visit.
+
+## Installation
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+1. Clone the repo
+```
+git clone https://github.com/meemeee/flack.git
+```
+
+2. Install requirements
+```
+pip3 install -r requirements.txt
+```
+
+3. Run on local server
+```
+export FLASK_APP=application.py
+flask run --no-reload
+```
+
+## Technologies
+
+* [Flask](https://palletsprojects.com/p/flask/) - Python Micro Web framework
+* [Jinja2](https://palletsprojects.com/p/jinja/) -  Templating language
+* [Handlebars](https://handlebarsjs.com/guide/) -  Templating language
+* [Bootstrap](https://getbootstrap.com/docs/4.0/) - CSS framework
+* [fullPage.js](https://github.com/alvarotrigo/fullPage.js/#fullpagejs) -  Fullscreen scrolling library
+* [Animate.css](https://github.com/daneden/animate.css) -  Animation library
+
+
+

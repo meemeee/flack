@@ -6,7 +6,7 @@ $(document).ready(function () {
         localStorage.removeItem('last_channel');
     }
 
-    // Fuction to add and remove the animations
+    // Function to add and remove the animations
     function animateCSS(element, animationName, callback) {
         const node = document.querySelector(element)
         node.classList.add('animated', animationName)
@@ -58,31 +58,22 @@ $(document).ready(function () {
 
     })
 
-    //adding the action to the button
-    $(document).on('click', '#btn', function () {
+    // Adding action to 'Get started' button
+    $(document).on('click', '#get-started', function () {
         fullpage_api.moveSlideRight();
-    });
-    $(document).on('click', '#btn2', function () {
-        fullpage_api.moveSlideLeft();
-    });
-    $(document).on('click', '#btn3', function () {
-        fullpage_api.moveSlideRight();
-    });
-    $(document).on('click', '#btn4', function () {
-        fullpage_api.moveSlideLeft();
     });
 
-    // By default, Start button is disabled
-    const start = document.querySelector('#start');
-    start.disabled = true;
+    // By default, Go button is disabled
+    const go = document.querySelector('#go');
+    go.disabled = true;
     
     // Enable Start button only if there is text in the input field
     const name = document.querySelector('#name');
     document.querySelector('#name').onkeyup = () => {
         if (name.value.length > 0)
-            start.disabled = false;                       
+            go.disabled = false;                       
         else
-            start.disabled = true;
+            go.disabled = true;
     };
 
 });
