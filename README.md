@@ -12,13 +12,14 @@ This project is an online messaging service using Flask, similar in spirit to [S
 Made for project 2 of [CS50W](https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/).
 
 ### Features
-- **Display name**: On the fist visit, user will be prompted to log in with a display name, which will eventually be associated with every message the user sends.
+- **Display name**: On the first visit, user will log in with a display name, which will be associated with every message the user sends.
 - **Create channels**: Any user can create a new channel, so long as its name doesn’t conflict with the name of an existing channel.
-- **Channel List**: the user can see a list of all current channels, switching among which will not require reloading the page.
-- **Messages View**: Once a channel is selected, the user can see up to 100 latest messages. 
-- **Send and receive messages in real-time**: Sending and receiving messages will not require reloading the page. 
-- **Remove their own messages**: the user can remove his own messages, also in real-time.
-- **Remember the Channel**: If the user closes a channel page (by closing the web browser window), he will be taken back to that channel in his next visit.
+- **Channel List**: Switching among channels will not require reloading the page.
+- **Messages View**: The user can see up to 100 latest messages in a single channel. 
+- **Send and receive messages in real time**: Sending and receiving messages will not require reloading the page.
+- **Remove messages**: Hovering on one message to see an option to remove it (limited to its sender). This is also a real-time action. 
+- **New message alert**: If there are unread messages while user is logged in, the corresponding channel will be displayed differently to indicate new messages.  
+- **Remember the Channel**: If the user closes a channel page (by closing the browser window), he will be taken back to that channel on his next visit.
 
 ## Installation
 

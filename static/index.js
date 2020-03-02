@@ -1,6 +1,6 @@
 $(document).ready(function () {
     // Redirect to last channel if this is not the first visit
-    if (localStorage.getItem('last_channel')) {
+    if (localStorage.getItem('last_channel') && document.querySelector('#last_channel')) {
         document.querySelector('#last_channel').href = localStorage.getItem('last_channel');
         // Clear previous lastChannel value
         localStorage.removeItem('last_channel');
@@ -29,7 +29,7 @@ $(document).ready(function () {
             // Moving from section 0
             if (index.index == 0 && direction == 'down') {
                 // Remove 'delay' attribute in section 0
-                document.querySelector('.zero .is-animated').classList.remove('animated', 'fadeIn', 'delay-1s');
+                document.querySelector('.zero .is-animated').classList.remove('animated', 'fadeIn');
                 // Animate next section
                 animateCSS('.first .is-animated', 'fadeInUp');
             }
@@ -59,8 +59,15 @@ $(document).ready(function () {
     })
 
     // Adding action to 'Get started' button
-    $(document).on('click', '#get-started', function () {
+    document.querySelector('#get-started').onclick = () => {
+        // animation
         fullpage_api.moveSlideRight();
+    };
+    document.querySelectorAll('.CTA').forEach(button => {
+        button.onclick = () => {
+            // no animation
+            fullpage_api.silentMoveTo(4, 1);
+        }
     });
 
     // By default, Go button is disabled

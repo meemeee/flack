@@ -15,11 +15,11 @@ All channels
             <a href="/" style="text-decoration: none;">
                 <p class="text-gray font-weight-bold px-2 mx-3 mb-2">FLACK</p>
             </a>
-            <div class="chat-head align-items-center px-2 mx-3">
-                <div class="col-md-3 px-0">
+            <div class="chat-head align-items-center px-2 mx-3 mb-2">
+                <div class="col-md-3 px-0" style="height: 50px">
                     <p class="username text-center">{{ user|first }}</p>
                 </div>
-                <div class="col-md-8 px-0">
+                <div class="col-md-8 px-0" style="height: 50px">
                     <h4 class="m-0 text-truncate" id="user_name">{{ user }}</h4>
                     <p class="text-success">Online</p>
                 </div>
@@ -56,19 +56,19 @@ All channels
                 <button id="sidebarCollapse" type="button" class="btn shadow-none align-self-start mb-2">
                     <i class="text-gray fa fa-chevron-left" style="font-size: 1.4rem;"></i>
                 </button> 
-                <div class="chat-head align-items-center">
+                <div class="chat-head align-items-center mb-2">
                     <!-- Template for channel page -->
                     {% if channel %}      
-                    <div>
+                    <div style="height: 50px">
                         <h4 id="channel_title" class="m-0">{{ channel }}</h4>
                         <p class="channel-desc" id="current-channel-desc" style="font-size: 1rem;">{{ desc }}</p>
                     </div>
 
                     <!-- Template for channels page -->
                     {% else %}
-                    <div>
+                    <div style="height: 50px">
                     <h4 id="channel_title" class="m-0">Welcome</h4>
-                    <p id="current-channel-desc"><i>Select a channel to start chatting.</i></p>
+                    <p id="current-channel-desc">Select a channel to start chatting.</p>
                     </div>
                     {% endif %}
                 </div>

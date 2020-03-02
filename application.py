@@ -103,14 +103,18 @@ def new_channel():
     else:
         name = request.form.get("channel_name")
         description = request.form.get("channel_desc")
-  
+
+        # Replace space character in name with '-' (if any)
+        if " " in name:
+            name = name.replace(" ", "-")
+              
         if not name:
             return render_template("error.html", message="You must provide channel name.")
         
-        elif len(name) > 32 or ' ' in name:
-            return render_template("error.html", message="Channel name must not exceed 32 characters or contain space.")
+        elif len(name) > 32:
+            return render_template("error.html", message="Channel name must not exceed 32 characters.")
         elif len(description) > 128: 
-            return render_template("error.html", message="Channel description must not exceed 128 characters or contain space.")
+            return render_template("error.html", message="Channel description must not exceed 128 characters.")
 
         elif name in channel_list:
             return render_template("error.html", message="Unavailable channel name. Please choose another.")

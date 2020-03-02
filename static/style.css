@@ -1,5 +1,8 @@
 img {
-    max-width: 600px;
+  max-width: 600px;
+  position: relative;
+  z-index: -1;
+
 }
 
 h1, h2, h3 {
@@ -14,7 +17,7 @@ h2 {
 .section p, .slide p {
 	font-family: 'Open Sans';
 	color: rgb(139, 139, 139);
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .section hr {
@@ -175,7 +178,10 @@ ul {
     margin-left: 18rem;
     width: calc(100% - 18rem);
   }
-
+  h2 {
+    font-weight: 900;
+	  font-size: 40px;
+  }
 }
 
 .text-gray {
@@ -279,7 +285,7 @@ p[class="avatar text-center"] {
   border-color: #ced4da;
 }
 
-.fa-circle {
+.fa.fa-circle {
   color: rgb(255, 143, 159);
   font-size: 0.8rem;
 }
@@ -287,6 +293,8 @@ p[class="avatar text-center"] {
 .btn.btn-primary {
   background-color: rgb(255, 143, 159);
   border-color: rgb(255, 143, 159);
+  position: relative;
+  z-index: 100;
 }
 
 .btn.btn-primary:focus,
