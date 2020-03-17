@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             else {
                 const newmess_alert = document.createElement('i');
-                newmess_alert.setAttribute('class', 'fa fa-circle ml-2');
+                newmess_alert.setAttribute('class', 'fa fa-circle float-right');
                 newmess_channel_name.append(newmess_alert);
                 newmess_channel.classList.add('unread');
             }

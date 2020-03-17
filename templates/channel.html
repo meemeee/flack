@@ -80,7 +80,7 @@ All channels
                         <div class="row my-2">
                             <!-- User's messages -->
                             {% if message.user == user %}
-                            <div class="col-md-8 ml-auto">
+                            <div class="col-md-10 ml-auto">
                                 <span id="{{ message.mess_id }}" 
                                     class="d-flex justify-content-end outgoing-message">
                                     <!-- For non-deleted message, display timestamp and trashbin -->
@@ -91,7 +91,7 @@ All channels
                                             </a>
                                             {{ message.timestamp }}
                                         </span>
-                                        <p class="mr-2">{{ message.content }}</p>
+                                        <p class="mr-2 text-break">{{ message.content }}</p>
                                     {% else %}
                                         <p class="deleted mr-2">{{ message.content }}</p>
                                     {% endif %}
@@ -100,7 +100,7 @@ All channels
 
                             <!-- Others' messages -->
                             {% else %}
-                            <div class="col-md-8 mr-auto">
+                            <div class="col-md-10 mr-auto">
                                 <span id="{{ message.mess_id }}" 
                                     class="d-flex justify-content-start">
                                     <span class="align-self-end mr-2">
@@ -113,7 +113,7 @@ All channels
                                         <span class="d-flex incoming-message" data-id="{{ message.mess_id }}">
                                             <!-- For non-deleted message, display timestamp -->
                                             {% if message.content != "Message has been deleted." %}
-                                                <p>{{ message.content }}</p>
+                                                <p class="text-break">{{ message.content }}</p>
                                                 <span class="optional align-self-center">
                                                     {{ message.timestamp }}
                                                 </span>
@@ -188,7 +188,7 @@ All channels
         {{#with data}}
         <!-- User's messages -->
         {{#if_eq user}}
-        <div class="col-md-8 ml-auto">
+        <div class="col-md-10 ml-auto">
             <span id="{{ mess_id }}" 
                 class="d-flex justify-content-end outgoing-message">
                 {{#unless content "Message has been deleted." }}
@@ -198,7 +198,7 @@ All channels
                         </a>
                         {{{ timestamp }}}
                     </span>
-                    <p class="mr-2">{{{ content }}}</p>
+                    <p class="mr-2 text-break">{{{ content }}}</p>
                 {{ else }}
                     <p class="deleted mr-2">{{{ content }}}</p>
                 {{/unless}}
@@ -207,7 +207,7 @@ All channels
 
         <!-- Others' messages -->
         {{ else }}
-        <div class="col-md-8 mr-auto">
+        <div class="col-md-10 mr-auto">
             <span id="{{ mess_id }}" 
                 class="d-flex justify-content-start">
                 <span class="align-self-end mr-2">
@@ -221,7 +221,7 @@ All channels
                     </span>
                     <span class="d-flex incoming-message" data-id="{{ mess_id }}">
                     {{#unless content "Message has been deleted." }}
-                        <p>{{{ content }}}</p>
+                        <p class="text-break">{{{ content }}}</p>
                         <span class="optional align-self-center">
                             {{{ timestamp }}}
                         </span>

@@ -7,9 +7,9 @@
 
 ## Description
 
-This project is an online messaging service using Flask, similar in spirit to [Slack](https://slack.com/features). The project uses Javascript to run code server-side, AJAX to retrieve data from servers asynchronously, and Socket.IO to communicate between clients and servers.
+This project is an online messaging service using Flask, similar in spirit to [Slack](https://slack.com/features). The project uses Javascript to run code client-side, AJAX to request data from server asynchronously, and Socket.IO to communicate between clients and servers.
 
-Made for project 2 of [CS50W](https://courses.edx.org/courses/course-v1:HarvardX+CS50W+Web/course/).
+Made for project 2 of [CS50Web](https://cs50.harvard.edu/web/).
 
 ### Features
 - **Display name**: On the first visit, user will log in with a display name, which will be associated with every message the user sends.
@@ -44,9 +44,8 @@ flask run --no-reload
 ## Technologies
 
 * [Flask](https://palletsprojects.com/p/flask/) - Python Micro Web framework
-* [Jinja2](https://palletsprojects.com/p/jinja/) -  Templating language
-* [Handlebars](https://handlebarsjs.com/guide/) -  Templating language
 * [Bootstrap](https://getbootstrap.com/docs/4.0/) - CSS framework
+* [Handlebars](https://handlebarsjs.com/guide/) -  Templating language
 * [fullPage.js](https://github.com/alvarotrigo/fullPage.js/#fullpagejs) -  Fullscreen scrolling library
 * [Animate.css](https://github.com/daneden/animate.css) -  Animation library
 

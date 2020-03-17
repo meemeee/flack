@@ -1,3 +1,9 @@
+// Start showing arrow-down when mouse move
+function showArrow () {
+    document.querySelector('.arrow-wrapper').style.visibility = "visible";
+    document.querySelector('.arrow-wrapper').classList.add('animated', 'fadeInDown')
+}
+
 $(document).ready(function () {
     // Redirect to last channel if this is not the first visit
     if (localStorage.getItem('last_channel') && document.querySelector('#last_channel')) {
@@ -30,6 +36,7 @@ $(document).ready(function () {
             if (index.index == 0 && direction == 'down') {
                 // Remove 'delay' attribute in section 0
                 document.querySelector('.zero .is-animated').classList.remove('animated', 'fadeIn');
+                document.querySelector('.fa-long-arrow-down').style.display = "none";
                 // Animate next section
                 animateCSS('.first .is-animated', 'fadeInUp');
             }

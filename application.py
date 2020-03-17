@@ -119,7 +119,7 @@ def new_channel():
         elif name in channel_list:
             return render_template("error.html", message="Unavailable channel name. Please choose another.")
         else:
-            # Demo: channel_list = [{name: {'desc': description, 'messages': []}},...]
+            # Format: channel_list = [{name: {'desc': description, 'messages': []}},...]
             Dict = {}
             Dict[name] = {'desc': description, 'messages': []}
    
@@ -171,5 +171,5 @@ def delete(data):
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    app.run(host="0.0.0.0", port=8000)
+    app.run(host="0.0.0.0", port=5000)
     

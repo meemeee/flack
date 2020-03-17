@@ -1,5 +1,6 @@
 img {
   max-width: 600px;
+  max-height: 600px;
   position: relative;
   z-index: -1;
 
@@ -17,7 +18,7 @@ h2 {
 .section p, .slide p {
 	font-family: 'Open Sans';
 	color: rgb(139, 139, 139);
-	font-size: 14px;
+	font-size: 16px;
 }
 
 .section hr {
@@ -202,7 +203,7 @@ ul {
   background: rgb(242, 242, 242);
 	border-radius: 15px 15px 15px 0px;
 	margin: 0;
-  color: black;
+  color: rgb(58, 58, 58);
   line-height: 1.2rem;
 	padding: 10px 10px 10px 10px;
 }
@@ -240,7 +241,7 @@ i:active,
 }
 
 .channel-desc {
-  font-size: 14px; 
+  font-size: 15px; 
   color: rgb(168, 167, 167);
 }
 
@@ -249,7 +250,7 @@ i:active,
 }
 .opponent-name {
   color: rgb(129, 129, 129);
-  font-weight: bold;
+  font-weight: 600;
 }
 
 p[class="avatar text-center"] {
@@ -275,7 +276,11 @@ p[class="avatar text-center"] {
   border-radius: 100px;
   
 }
-
+.fa.fa-long-arrow-down {
+  font-size: 2rem; 
+  animation-duration: 3s;
+  color: rgb(255, 143, 159);
+}
 .fa.fa-paper-plane {
   font-size: 1.9rem; 
   color: rgb(255, 143, 159);

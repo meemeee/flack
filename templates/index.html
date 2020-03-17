@@ -1,144 +1,146 @@
 {% extends "layout.html" %}
 
 {% block tittle %}
-    Flack
+Flack
 {% endblock %}
 
 {% block main %}
-    {% if user %}
-    <div class="container">
-        <div class="row align-items-center p-5 my-5">
-            <div class="col-lg-6 text-center">
-                <div class="mb-4 animated fadeInDown">
-                    <h2>Welcome back, {{ user }}!</h2>
-                    <h4 class="my-5">Shall we?</h4>
-                    
-                    <a href="{{ url_for('logout') }}">
-                        <button class="btn btn-secondary btn-lg shadow-none rounded-pill mr-2">Log out</button>
-                    </a> 
-                    <a id="last_channel" href="{{ url_for('channels') }}">
-                        <button class="btn btn-primary btn-lg shadow-none rounded-pill">Let's go</button>
-                    </a>  
-                         
-                </div>
+{% if user %}
+<div class="container">
+    <div class="row align-items-center p-5 my-5">
+        <div class="col-lg-6 text-center">
+            <div class="mb-4 animated fadeInDown">
+                <h2>Welcome back, {{ user }}!</h2>
+                <h4 class="my-5">Shall we?</h4>
+
+                <a href="{{ url_for('logout') }}">
+                    <button class="btn btn-secondary btn-lg shadow-none rounded-pill mr-2">Log out</button>
+                </a>
+                <a id="last_channel" href="{{ url_for('channels') }}">
+                    <button class="btn btn-primary btn-lg shadow-none rounded-pill">Let's go</button>
+                </a>
+
             </div>
-    
-            <div class="col-lg-6 ml-auto">
-                <img src="../static/media/9.jpg" alt="" class="img-fluid animated fadeInDown">
+        </div>
+
+        <div class="col-lg-6 ml-auto">
+            <img src="../static/media/9.jpg" class="img-fluid animated fadeInDown">
+        </div>
+    </div>
+</div>
+
+{% else %}
+<div id="fullpage" class="fullpage-wrapper">
+    <div class="section zero">
+        <div class="row align-items-center px-5 mx-5" onmousemove="showArrow()">
+            <div class="col-lg-4 my-4">
+                <div class="is-animated animated fadeIn delay-0.2s">
+                    <h2>Let's get Flacking</h2>
+                    <hr>
+                    <p class="my-4 mb-0">Quo quem minim sensibus in, mea ne tale malis constituam, viderer legimus
+                        voluptaria ei pro.
+                    </p>
+                </div>
+                <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
+            </div>
+            <div class="col-lg-8 ml-auto animated fadeIn delay-0.2s">
+                <img src="../static/media/1.jpg" class="img-fluid">
+            </div>
+        </div>
+        <div class="row align-items-end justify-content-center">
+            <div class="arrow-wrapper" style="visibility: hidden;">
+                <i class="fa fa-long-arrow-down animated infinite flash"></i>
             </div>
         </div>
     </div>
+    <div class="section first">
+        <div class="row align-items-center px-5 mx-5">
+            <div class="col-lg-4 my-4">
+                <div class="is-animated delay-0.2s">
+                    <h2>No registration needed</h2>
+                    <hr>
+                    <p class="my-4 mb-0">Quo quem minim sensibus in, mea ne tale malis constituam, viderer legimus
+                        voluptaria ei pro.
+                    </p>
 
-    {% else %}
-    <div id="fullpage" class="fullpage-wrapper">
-        <div class="section zero">
-            <div class="row align-items-center px-5 mx-5">
-                <div class="col-lg-4 my-4">
-                    <div class="is-animated animated fadeIn delay-0.2s">
-                        <h2>Let's get Flacking</h2>
-                        <hr>
-                        <p class="my-4 mb-0">Quo quem minim sensibus in, mea ne tale malis constituam, viderer legimus voluptaria ei pro. 
-                            Periculis intellegam et mea, cum id vidit vitae explicari.
-                        </p>
-                        
-                    </div>
-                    <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
                 </div>
-                <div class="col-lg-8 ml-auto animated fadeIn delay-0.2s">
-                    <img src="../static/media/1.jpg" alt="" class="img-fluid">
-                </div>
-                <div class="row align-items-end justify-content-center">
-                    <i class="fa fa-long-arrow-down" style="font-size: 1.5rem"></i>
-                </div>
+                <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
             </div>
-            
+            <div class="col-lg-8 ml-auto">
+                <img src="../static/media/2.jpg" class="img-fluid">
+            </div>
         </div>
-        <div class="section first">
+    </div>
+    <div class="section second">
+        <div class="row align-items-center px-5 mx-5">
+            <div class="col-lg-4 my-4">
+                <div class=" is-animated delay-0.2s">
+                    <h2>It's simple. It's free.</h2>
+                    <hr>
+                    <p class="my-4 mb-0">Quo quem minim sensibus in, mea ne tale malis constituam, viderer legimus
+                        voluptaria ei pro.
+                    </p>
+
+                </div>
+                <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
+            </div>
+            <div class="col-lg-8 ml-auto">
+                <img src="../static/media/4.jpg" class="img-fluid">
+            </div>
+        </div>
+    </div>
+    <div class="section third">
+        <div class="slide" data-anchor="firstSlide">
             <div class="row align-items-center px-5 mx-5">
                 <div class="col-lg-4 my-4">
                     <div class="is-animated delay-0.2s">
-                        <h2>No registration</h2>
+                        <h2>Join chats worldwide</h2>
                         <hr>
-                        <p class="my-4 mb-0">Vestibulum consectetur tempus ligula eget pretium. Sed et turpis vitae urna fringilla molestie. 
-                            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+                        <p class="my-4 mb-0">Quo quem minim sensibus in, mea ne tale malis constituam, viderer legimus
+                            voluptaria ei pro.
                         </p>
-                       
+
                     </div>
-                    <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
+                    <button id="get-started" class="btn btn-primary shadow-none rounded-pill">Get Started</button>
                 </div>
                 <div class="col-lg-8 ml-auto">
-                    <img src="../static/media/2.jpg" alt="" class="img-fluid  ">
+                    <img src="../static/media/3.jpg" class="img-fluid">
                 </div>
             </div>
         </div>
-        <div class="section second">
-            <div class="row align-items-center px-5 mx-5">
-                <div class="col-lg-4 my-4">
-                    <div class=" is-animated delay-0.2s">
-                        <h2>It's simple. It's free.</h2>
-                        <hr>
-                        <p class="my-4 mb-0">Duis efficitur risus at ex malesuada aliquet. Nuno cursus bibendum est, eget placerat libero maximus a. 
-                            In lectus quam, tincidunt vitae feugiat non, varius in odio. 
-                        </p>
-                 
-                    </div>
-                    <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
-                </div>
-                <div class="col-lg-8 ml-auto">
-                    <img src="../static/media/4.jpg" alt="" class="img-fluid  ">
-                </div>
-            </div>
-        </div>
-        <div class="section third">
-            <div class="slide" data-anchor="firstSlide">
-                <div class="row align-items-center px-5 mx-5">
-                    <div class="col-lg-4 my-4">
-                        <div class="is-animated delay-0.2s">
-                            <h2>Join chats worldwide</h2>
-                            <hr>
-                            <p class="my-4 mb-0">Nulla odio metus, gravida vel ante eu, tincidunt gravida risus. 
-                                Sed quis lacus venenatis, euismod arcu sit amet, venenatis orci. 
-                            
-                            </p>
-                            
-                        </div>
-                        <button id="get-started" class="btn btn-primary shadow-none rounded-pill">Get Started</button>
-                    </div>
-                    <div class="col-lg-8 ml-auto">
-                        <img src="../static/media/3.jpg" alt="" class="img-fluid  ">
-                    </div>
-                </div>
-            </div>
-            <div class="slide" data-anchor="secondSlide">
-                <div class="row justify-content-center px-5 mx-5">
-                    <div class="col-md-8 my-5">
+        <div class="slide" data-anchor="secondSlide">
+            <div class="px-5 mx-5">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-6 my-5">
                         <div class="col-10 mx-auto">
                             <h2>Before we go...</h2>
                             <h3>Please tell us your name</h3>
                             <form action="{{ url_for('login') }}" method="post">
                                 <div class="form-group d-flex bd-highlight">
                                     <div class="py-4 flex-grow-1 bd-highlight">
-                                        <input id="name" autofocus autocomplete="off" 
-                                        class="form-control rounded-pill shadow-none" name="name" 
-                                        placeholder="What should we call you?" type="text">
+                                        <input id="name" autofocus autocomplete="off"
+                                            class="form-control rounded-pill shadow-none" name="name"
+                                            placeholder="What should we call you?" type="text">
                                     </div>
                                     <div class="px-2 py-4 bd-highlight">
-                                        <button id="go" class="btn btn-primary shadow-none rounded-pill" 
-                                        type="submit">Go</button>
-                                    </div>       
+                                        <button id="go" class="btn btn-primary shadow-none rounded-pill"
+                                            type="submit">Go</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
                     </div>
-                
-                    <div class="col-md-6">
-                        <img src="../static/media/8.jpg" alt="" class="img-fluid  ">
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-10 col-lg-5">
+                        <img src="../static/media/8.jpg" class="img-fluid">
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    {% endif %}
-    <script src="{{ url_for('static', filename='index.js') }}"></script>
+{% endif %}
+<script src="{{ url_for('static', filename='index.js') }}"></script>
 {% endblock %}
