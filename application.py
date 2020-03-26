@@ -170,6 +170,6 @@ def delete(data):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
-    app.run(host="0.0.0.0", port=5000)
+    socketio.run(app)
+    # Set app.run(host="0.0.0.0", port=5000) to run on production
     

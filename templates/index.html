@@ -7,8 +7,8 @@ Flack
 {% block main %}
 {% if user %}
 <div class="container">
-    <div class="row align-items-center p-5 my-5">
-        <div class="col-lg-6 text-center">
+    <div class="row align-items-center px-lg-5 py-5 my-5">
+        <div class="col-md-6 text-center">
             <div class="mb-4 animated fadeInDown">
                 <h2>Welcome back, {{ user }}!</h2>
                 <h4 class="my-5">Shall we?</h4>
@@ -23,7 +23,7 @@ Flack
             </div>
         </div>
 
-        <div class="col-lg-6 ml-auto">
+        <div class="col-8 col-md-6 mx-auto ml-md-auto">
             <img src="../static/media/9.jpg" class="img-fluid animated fadeInDown">
         </div>
     </div>
@@ -32,8 +32,8 @@ Flack
 {% else %}
 <div id="fullpage" class="fullpage-wrapper">
     <div class="section zero">
-        <div class="row align-items-center px-5 mx-5" onmousemove="showArrow()">
-            <div class="col-lg-4 my-4">
+        <div class="row align-items-center px-5 mx-md-5">
+            <div class="col-10 col-md-10 mx-auto col-lg-4 my-5">
                 <div class="is-animated animated fadeIn delay-0.2s">
                     <h2>Let's get Flacking</h2>
                     <hr>
@@ -43,19 +43,20 @@ Flack
                 </div>
                 <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
             </div>
-            <div class="col-lg-8 ml-auto animated fadeIn delay-0.2s">
+            <div class="col-12 col-sm-10 col-md-9 mx-auto col-lg-8 ml-lg-auto animated fadeIn delay-0.2s">
                 <img src="../static/media/1.jpg" class="img-fluid">
             </div>
         </div>
         <div class="row align-items-end justify-content-center">
-            <div class="arrow-wrapper" style="visibility: hidden;">
-                <i class="fa fa-long-arrow-down animated infinite flash"></i>
+            <div class="text-center is-animated animated fadeIn delay-1s" 
+                style="z-index: 0;">
+                <i class="fa fa-chevron-down"></i>
             </div>
         </div>
     </div>
     <div class="section first">
-        <div class="row align-items-center px-5 mx-5">
-            <div class="col-lg-4 my-4">
+        <div class="row align-items-center px-5 mx-md-5">
+            <div class="col-10 col-md-10 mx-auto col-lg-4 my-5">
                 <div class="is-animated delay-0.2s">
                     <h2>No registration needed</h2>
                     <hr>
@@ -66,14 +67,14 @@ Flack
                 </div>
                 <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
             </div>
-            <div class="col-lg-8 ml-auto">
+            <div class="col-12 col-md-9 col-lg-8 mx-auto ml-lg-auto">
                 <img src="../static/media/2.jpg" class="img-fluid">
             </div>
         </div>
     </div>
     <div class="section second">
-        <div class="row align-items-center px-5 mx-5">
-            <div class="col-lg-4 my-4">
+        <div class="row align-items-center px-5 mx-md-5">
+            <div class="col-10 col-md-10 mx-auto col-lg-4 my-5">
                 <div class=" is-animated delay-0.2s">
                     <h2>It's simple. It's free.</h2>
                     <hr>
@@ -84,15 +85,15 @@ Flack
                 </div>
                 <button class="CTA btn btn-primary shadow-none rounded-pill">Get Started</button>
             </div>
-            <div class="col-lg-8 ml-auto">
+            <div class="col-12 col-md-9 col-lg-8 mx-auto ml-lg-auto">
                 <img src="../static/media/4.jpg" class="img-fluid">
             </div>
         </div>
     </div>
     <div class="section third">
         <div class="slide" data-anchor="firstSlide">
-            <div class="row align-items-center px-5 mx-5">
-                <div class="col-lg-4 my-4">
+            <div class="row align-items-center px-5 mx-md-5">
+                <div class="col-10 col-md-10 mx-auto col-lg-4 my-5">
                     <div class="is-animated delay-0.2s">
                         <h2>Join chats worldwide</h2>
                         <hr>
@@ -103,13 +104,13 @@ Flack
                     </div>
                     <button id="get-started" class="btn btn-primary shadow-none rounded-pill">Get Started</button>
                 </div>
-                <div class="col-lg-8 ml-auto">
+                <div class="col-12 col-md-9 col-lg-8 mx-auto ml-lg-auto">
                     <img src="../static/media/3.jpg" class="img-fluid">
                 </div>
             </div>
         </div>
         <div class="slide" data-anchor="secondSlide">
-            <div class="px-5 mx-5">
+            <div class="px-5 mx-md-5">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-6 my-5">
                         <div class="col-10 mx-auto">

@@ -17,12 +17,16 @@ All channels
             </a>
             <div class="chat-head align-items-center px-2 mx-3 mb-2">
                 <div class="col-md-3 px-0" style="height: 50px">
+                    {% if user %}
                     <p class="username text-center">{{ user|first }}</p>
                 </div>
                 <div class="col-md-8 px-0" style="height: 50px">
                     <h4 class="m-0 text-truncate" id="user_name">{{ user }}</h4>
                     <p class="text-success">Online</p>
                 </div>
+                    {% else %}
+                    <h4 class="m-0 text-truncate" id="user_name">None</h4>
+                    {% endif  %}
             </div>
         
             <div id="channels" class="nav bg-white mb-0">

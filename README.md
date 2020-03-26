@@ -37,8 +37,7 @@ pip3 install -r requirements.txt
 
 3. Run on local server
 ```
-export FLASK_APP=application.py
-flask run --no-reload
+python3 ./application.py
 ```
 
 ## Technologies

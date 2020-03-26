@@ -1,3 +1,7 @@
+body {
+  overflow: hidden;
+}
+
 img {
   max-width: 600px;
   max-height: 600px;
@@ -14,7 +18,9 @@ h2 {
 	font-weight: 900;
 	font-size: 50px;
 }
-
+.row {
+  min-width: 400px;
+}
 .section p, .slide p {
 	font-family: 'Open Sans';
 	color: rgb(139, 139, 139);
@@ -90,6 +96,7 @@ min-height: 90px;
 .chat-body {
 position: relative;
 overflow-y: scroll;
+overflow-x: hidden;
 height: 70vh;
 min-height: 100px;
 
@@ -124,7 +131,6 @@ ul {
   color: rgb(168, 167, 167);
   margin-left: 20px;
   margin-right: 20px;
-  /* margin-bottom: 0; */
   font-size: 0.9rem;
 }
 
@@ -307,4 +313,29 @@ p[class="avatar text-center"] {
 .btn.btn-primary:active:hover {
   background-color: rgb(250, 98, 121);
   border-color: rgb(250, 105, 127);
+}
+
+.fa.fa-chevron-down {
+  margin-top: 20px;
+  display: block;
+  -webkit-animation: pulse2 2s infinite;
+  animation: pulse2 2s infinite;
+  color: rgb(255, 143, 159);
+  font-size: 1.7rem;
+  cursor: pointer;
+}
+@-webkit-keyframes pulse2 {
+  0% {
+      -webkit-transform: translate(0, 0);
+      transform: translate(0, 0);
+  }
+
+  50% {
+      -webkit-transform: translate(0, 10px);
+      transform: translate(0, 10px);
+  }
+  100% {
+      -webkit-transform: translate(0, 0);
+      transform: translate(0, 0);
+  }
 }
