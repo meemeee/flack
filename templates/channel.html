@@ -65,7 +65,8 @@ All channels
                     {% if channel %}      
                     <div style="height: 50px">
                         <h4 id="channel_title" class="m-0">{{ channel }}</h4>
-                        <p class="channel-desc" id="current-channel-desc" style="font-size: 1rem;">{{ desc }}</p>
+                        <p class="channel-desc" id="current-channel-desc" 
+                            style="font-size: 1rem;" title="{{ desc }}">{{ desc }}</p>
                     </div>
 
                     <!-- Template for channels page -->
@@ -85,7 +86,7 @@ All channels
                             <!-- User's messages -->
                             {% if message.user == user %}
                             <div class="col-md-10 ml-auto">
-                                <span id="{{ message.mess_id }}" 
+                                <div id="{{ message.mess_id }}" 
                                     class="d-flex justify-content-end outgoing-message">
                                     <!-- For non-deleted message, display timestamp and trashbin -->
                                     {% if message.content != "Message has been deleted." %}
@@ -99,22 +100,22 @@ All channels
                                     {% else %}
                                         <p class="deleted mr-2">{{ message.content }}</p>
                                     {% endif %}
-                                </span>                           
+                                </div>                           
                             </div>
 
                             <!-- Others' messages -->
                             {% else %}
                             <div class="col-md-10 mr-auto">
-                                <span id="{{ message.mess_id }}" 
+                                <div id="{{ message.mess_id }}" 
                                     class="d-flex justify-content-start">
-                                    <span class="align-self-end mr-2">
+                                    <div class="align-self-end mr-2">
                                         <p class="avatar text-center">{{ message.user|first }}</p>
-                                    </span>
-                                    <span>    
-                                        <span class="opponent-name mr-2">          
+                                    </div>
+                                    <div>    
+                                        <div class="opponent-name mr-2">          
                                             {{ message.user }}
-                                        </span>
-                                        <span class="d-flex incoming-message" data-id="{{ message.mess_id }}">
+                                        </div>
+                                        <div class="d-flex incoming-message" data-id="{{ message.mess_id }}">
                                             <!-- For non-deleted message, display timestamp -->
                                             {% if message.content != "Message has been deleted." %}
                                                 <p class="text-break">{{ message.content }}</p>
@@ -124,9 +125,9 @@ All channels
                                             {% else %}
                                                 <p class="deleted">{{ message.content }}</p>
                                             {% endif %}
-                                        </span>
-                                    </span>
-                                </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {% endif %}
                         </div>
@@ -143,7 +144,7 @@ All channels
             
                 <div id="type_message" class="chat-foot mt-auto mb-3" 
                 style="{% if not channel %}display:none{% endif %}">
-                    <form action="" method="post">
+                    <form method="post">
                         <div class="form-group d-flex">
                             <input autocomplete="off" class="form-control rounded-pill shadow-none" 
                                 id="message" name="message" 
@@ -165,7 +166,7 @@ All channels
             <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">
+                        <h5 class="modal-title" id="remove-message-confirmationLabel">
                             Remove message
                         </h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -193,7 +194,7 @@ All channels
         <!-- User's messages -->
         {{#if_eq user}}
         <div class="col-md-10 ml-auto">
-            <span id="{{ mess_id }}" 
+            <div id="{{ mess_id }}" 
                 class="d-flex justify-content-end outgoing-message">
                 {{#unless content "Message has been deleted." }}
                     <span class="optional d-flex align-items-center">
@@ -206,24 +207,24 @@ All channels
                 {{ else }}
                     <p class="deleted mr-2">{{{ content }}}</p>
                 {{/unless}}
-            </span>                           
+            </div>                           
         </div>
 
         <!-- Others' messages -->
         {{ else }}
         <div class="col-md-10 mr-auto">
-            <span id="{{ mess_id }}" 
+            <div id="{{ mess_id }}" 
                 class="d-flex justify-content-start">
-                <span class="align-self-end mr-2">
+                <div class="align-self-end mr-2">
                     <p class="avatar text-center">
                         {{#firstLetter user }} {{/firstLetter }}
                     </p>
-                </span>
-                <span>
+                </div>
+                <div>
                     <span class="opponent-name mr-2">          
                         {{{ user }}}
                     </span>
-                    <span class="d-flex incoming-message" data-id="{{ mess_id }}">
+                    <div class="d-flex incoming-message" data-id="{{ mess_id }}">
                     {{#unless content "Message has been deleted." }}
                         <p class="text-break">{{{ content }}}</p>
                         <span class="optional align-self-center">
@@ -232,9 +233,9 @@ All channels
                     {{ else }}
                         <p class="deleted">{{{ content }}}</p>
                     {{/unless}}
-                    </span>
-                </span>
-            </span>
+                    </div>
+                </div>
+            </div>
         </div>
         {{/if_eq}}
         {{/with}}

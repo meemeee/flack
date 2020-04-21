@@ -13,12 +13,12 @@ Flack | New channel
                 <div class="form-group bd-highlight">
                     <div class="mt-3 py-2 flex-grow-1 bd-highlight">
                         <input autofocus autocomplete="off" class="form-control rounded-pill shadow-none" id="channel_name" name="channel_name" 
-                            placeholder="Name" type="text">
+                            placeholder="Name" type="text" maxlength="32">
                     </div>
 
                     <div class="mb-3 py-2 flex-grow-1 bd-highlight">
-                        <input autofocus autocomplete="off" class="form-control rounded-pill shadow-none" id="channel_desc" name="channel_desc" 
-                            placeholder="Description" type="text">
+                        <input autocomplete="off" class="form-control rounded-pill shadow-none" id="channel_desc" name="channel_desc" 
+                            placeholder="Description" type="text" maxlength="128">
                     </div>
                     <div class="py-2 bd-highlight">
                         <button id="new_channel" class="btn btn-primary rounded-pill shadow-none" type="submit">
@@ -39,7 +39,7 @@ Flack | New channel
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
+                    <h5 class="modal-title" id="errorLabel">
                         Error!
                     </h5>
                     <button type="button" class="close shadow-none" data-dismiss="modal" aria-label="Close">
@@ -65,14 +65,6 @@ Flack | New channel
                 // Activate error modal
                 $('#error').modal();
                 document.querySelector('.modal-body').innerHTML = "Must provide name and description.";
-            }
-            else if (document.querySelector('#channel_name').value.length > 32) {
-                $('#error').modal();
-                document.querySelector('.modal-body').innerHTML = "Name: max. 32 characters.";
-            }
-            else if (document.querySelector('#channel_desc').value.length > 128) {
-                $('#error').modal();
-                document.querySelector('.modal-body').innerHTML = "Description: max. 128 characters.";
             }
             else {
                 document.querySelector('#form').submit();
